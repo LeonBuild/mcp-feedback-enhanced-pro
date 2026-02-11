@@ -125,6 +125,8 @@
         "combinedVerticalDesc": "AI summary on top, feedback input below, suitable for standard screens",
         "combinedHorizontal": "Horizontal Layout",
         "combinedHorizontalDesc": "AI summary on left, feedback input on right, suitable for widescreen displays",
+        "closeConfirmEnabled": "Confirm Before Close",
+        "closeConfirmEnabledDesc": "When enabled, closing or refreshing before feedback is submitted requires confirmation",
         "autoClose": "Auto Close Page",
         "autoCloseDesc": "Automatically close page after submitting feedback",
         "theme": "Theme",
@@ -224,6 +226,9 @@
         "timeoutDescription": "Due to prolonged inactivity, the session has timed out. The interface will automatically close in 3 seconds.",
         "closing": "Closing...",
         "label": "Session Timeout:"
+    },
+    "closeGuard": {
+        "pendingFeedback": "Feedback has not been submitted yet. Are you sure you want to close this window?"
     },
     "autoRefresh": {
         "enable": "Auto Detect",

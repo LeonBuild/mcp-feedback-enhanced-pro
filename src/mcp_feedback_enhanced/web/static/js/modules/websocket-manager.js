@@ -574,7 +574,11 @@
                 
                 // 延遲關閉，讓用戶看到訊息
                 setTimeout(function() {
-                    window.close();
+                    if (window.feedbackApp && typeof window.feedbackApp.closeWindowSafely === 'function') {
+                        window.feedbackApp.closeWindowSafely();
+                    } else {
+                        window.close();
+                    }
                 }, 3000);
             }
         }, 1000);

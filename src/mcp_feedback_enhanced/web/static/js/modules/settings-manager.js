@@ -30,6 +30,7 @@
         this.defaultSettings = {
             layoutMode: 'combined-vertical',
             autoClose: false,
+            closeConfirmEnabled: true,
             language: defaultLanguage,  // 使用 i18nManager 的當前語言
             imageSizeLimit: 0,
             enableBase64Detail: false,
@@ -409,6 +410,9 @@
         
         // 應用自動關閉設定
         this.applyAutoCloseToggle();
+
+        // 應用關閉前確認設定
+        this.applyCloseConfirmToggle();
         
         // 應用語言設定
         this.applyLanguageSettings();
@@ -452,6 +456,16 @@
         const autoCloseToggle = Utils.safeQuerySelector('#autoCloseToggle');
         if (autoCloseToggle) {
             autoCloseToggle.classList.toggle('active', this.currentSettings.autoClose);
+        }
+    };
+
+    /**
+     * 應用關閉前確認設定
+     */
+    SettingsManager.prototype.applyCloseConfirmToggle = function() {
+        const closeConfirmEnabled = Utils.safeQuerySelector('#closeConfirmEnabled');
+        if (closeConfirmEnabled) {
+            closeConfirmEnabled.checked = this.currentSettings.closeConfirmEnabled !== false;
         }
     };
 
@@ -684,6 +698,16 @@
                 const newValue = !self.get('autoClose');
                 self.set('autoClose', newValue);
                 autoCloseToggle.classList.toggle('active', newValue);
+            });
+        }
+
+        // 關閉前確認切換
+        const closeConfirmEnabled = Utils.safeQuerySelector('#closeConfirmEnabled');
+        if (closeConfirmEnabled) {
+            closeConfirmEnabled.addEventListener('change', function() {
+                const newValue = closeConfirmEnabled.checked;
+                self.set('closeConfirmEnabled', newValue);
+                console.log('關閉前確認狀態已更新:', newValue);
             });
         }
 

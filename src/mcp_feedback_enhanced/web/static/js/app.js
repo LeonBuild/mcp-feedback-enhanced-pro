@@ -98,6 +98,9 @@
         this.isInitialized = false;
         this.pendingSubmission = null;
 
+        // 視窗關閉保護（Web + Desktop）
+        this.allowWindowClose = false;
+
         // Tools call 統計（目前 chat）
         this.toolCallStatsTimer = null;
         this.toolCallCount = 0;
@@ -442,7 +445,16 @@
         const self = this;
 
         return new Promise(function(resolve) {
-            window.addEventListener('beforeunload', function() {
+            window.addEventListener('beforeunload', function(event) {
+                if (self.shouldConfirmBeforeClose()) {
+                    const confirmMessage = self.getCloseConfirmMessage();
+                    event.preventDefault();
+                    event.returnValue = confirmMessage;
+                    return confirmMessage;
+                }
+            });
+
+            window.addEventListener('unload', function() {
                 self.cleanup();
             });
 
@@ -852,18 +864,77 @@
         // 檢查是否在 Tauri 環境中
         if (window.__TAURI__) {
             console.log('🖥️ 檢測到 Tauri 環境，關閉桌面視窗');
-            try {
-                // 使用 Tauri API 關閉視窗
-                window.__TAURI__.window.getCurrent().close();
-            } catch (error) {
-                console.error('關閉 Tauri 視窗失敗:', error);
-                // 備用方案：關閉瀏覽器視窗
-                window.close();
-            }
+            this.closeWindowSafely();
         } else {
             console.log('🖥️ 非 Tauri 環境，嘗試關閉瀏覽器視窗');
             // 在瀏覽器環境中嘗試關閉視窗
+            this.closeWindowSafely();
+        }
+    };
+
+    FeedbackApp.prototype.isDesktopRuntime = function() {
+        return !!window.__TAURI__;
+    };
+
+    FeedbackApp.prototype.getCloseConfirmMessage = function() {
+        const defaultMessage = '尚未提交回饋，確定要關閉視窗嗎？';
+        if (!window.i18nManager) {
+            return defaultMessage;
+        }
+
+        return window.i18nManager.t('closeGuard.pendingFeedback', defaultMessage);
+    };
+
+    FeedbackApp.prototype.shouldConfirmBeforeClose = function() {
+        if (this.allowWindowClose) {
+            return false;
+        }
+
+        if (this.settingsManager && typeof this.settingsManager.get === 'function') {
+            const closeConfirmEnabled = this.settingsManager.get('closeConfirmEnabled', true);
+            if (closeConfirmEnabled === false) {
+                return false;
+            }
+        }
+
+        if (!this.currentSessionId && (!this.uiManager || typeof this.uiManager.getFeedbackState !== 'function')) {
+            return false;
+        }
+
+        if (!this.uiManager || typeof this.uiManager.getFeedbackState !== 'function') {
+            // 介面尚未完成初始化時採保守策略，避免誤關閉
+            return true;
+        }
+
+        const currentState = this.uiManager.getFeedbackState();
+        return currentState !== window.MCPFeedback.Utils.CONSTANTS.FEEDBACK_SUBMITTED;
+    };
+
+    FeedbackApp.prototype.closeWindowSafely = function() {
+        this.allowWindowClose = true;
+
+        try {
+            if (window.__TAURI__) {
+                if (window.__TAURI__.window && typeof window.__TAURI__.window.getCurrent === 'function') {
+                    window.__TAURI__.window.getCurrent().close();
+                    return;
+                }
+
+                if (window.__TAURI__.window && typeof window.__TAURI__.window.getCurrentWindow === 'function') {
+                    window.__TAURI__.window.getCurrentWindow().close();
+                    return;
+                }
+            }
+
             window.close();
+        } catch (error) {
+            console.error('關閉視窗失敗:', error);
+            window.close();
+        } finally {
+            // 若關閉失敗，避免永久跳過關閉確認
+            setTimeout(function() {
+                this.allowWindowClose = false;
+            }.bind(this), 1500);
         }
     };
 

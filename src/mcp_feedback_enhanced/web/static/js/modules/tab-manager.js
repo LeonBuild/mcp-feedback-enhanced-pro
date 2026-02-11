@@ -38,9 +38,9 @@
         // 開始心跳
         this.startHeartbeat();
 
-        // 監聽頁面關閉事件
+        // 監聽頁面真正關閉事件
         const self = this;
-        window.addEventListener('beforeunload', function() {
+        window.addEventListener('unload', function() {
             self.unregisterTab();
         });
 

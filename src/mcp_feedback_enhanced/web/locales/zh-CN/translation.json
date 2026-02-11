@@ -125,6 +125,8 @@
         "combinedVerticalDesc": "AI 摘要在上，反馈输入在下，适合标准屏幕使用",
         "combinedHorizontal": "水平布局",
         "combinedHorizontalDesc": "AI 摘要在左，反馈输入在右，适合宽屏幕使用",
+        "closeConfirmEnabled": "关闭前确认",
+        "closeConfirmEnabledDesc": "启用后，未提交反馈时关闭或刷新页面会要求二次确认",
         "autoClose": "自动关闭页面",
         "autoCloseDesc": "提交回馈后自动关闭页面",
         "theme": "主题",
@@ -225,6 +227,9 @@
         "timeoutDescription": "由于长时间无响应，会话已超时。界面将在 3 秒后自动关闭。",
         "closing": "正在关闭...",
         "label": "会话超时:"
+    },
+    "closeGuard": {
+        "pendingFeedback": "当前反馈尚未提交，确定要关闭窗口吗？"
     },
     "autoRefresh": {
         "enable": "自动检测",

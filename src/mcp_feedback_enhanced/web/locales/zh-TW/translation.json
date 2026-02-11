@@ -130,6 +130,8 @@
         "combinedVerticalDesc": "AI 摘要在上，回饋輸入在下，適合標準螢幕使用",
         "combinedHorizontal": "水平佈局",
         "combinedHorizontalDesc": "AI 摘要在左，回饋輸入在右，適合寬螢幕使用",
+        "closeConfirmEnabled": "關閉前確認",
+        "closeConfirmEnabledDesc": "啟用後，未提交反饋時關閉或重新整理頁面會要求二次確認",
         "autoClose": "自動關閉頁面",
         "autoCloseDesc": "提交回饋後自動關閉頁面",
         "theme": "主題",
@@ -231,6 +233,9 @@
         "closing": "正在關閉...",
         "triggered": "會話已超時，程序即將關閉",
         "label": "會話超時:"
+    },
+    "closeGuard": {
+        "pendingFeedback": "目前反饋尚未提交，確定要關閉視窗嗎？"
     },
     "autoRefresh": {
         "enable": "自動檢測",

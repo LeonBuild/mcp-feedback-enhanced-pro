@@ -256,7 +256,7 @@ make quick-check                                        # Quick check and auto-f
 
 📋 **Complete Version History:** [RELEASE_NOTES/CHANGELOG.en.md](RELEASE_NOTES/CHANGELOG.en.md)
 
-### Latest Version Highlights (v3.0.3)
+### Latest Version Highlights (v3.0.4)
 - 📦 **Package & Command Rename**: Unified package and CLI entrypoint to `mcp-feedback-enhanced-pro`, enabling direct usage with `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest`
 - ⚙️ **FastMCP 3 Upgrade**: Upgraded runtime baseline to FastMCP 3.x (`fastmcp>=3.0.0b2`) and completed compatibility verification
 - ⏳ **Timeout Hardening + 30-Day Default**: Added safer timeout handling and unified default timeout to 30 days (`2592000` seconds)

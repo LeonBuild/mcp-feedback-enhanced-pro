@@ -46,7 +46,7 @@
             "paste": "Ctrl+V 貼上圖片 (Mac 用 Cmd+V)"
         },
         "submitSuccess": "回饋提交成功！",
-        "submittedWaiting": "已送出反饋，等待下一次 MCP/LLM 回應。桌面模式下視窗會保持開啟，請手動關閉。",
+        "submittedWaiting": "已送出反饋，等待下次 MCP 調用...",
         "waitingForUser": "等待用戶回饋...",
         "alreadySubmitted": "回饋已提交，請等待下次 MCP 調用",
         "processingFeedback": "正在處理中，請稍候",

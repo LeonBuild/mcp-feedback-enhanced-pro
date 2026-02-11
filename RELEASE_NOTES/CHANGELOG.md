@@ -2,6 +2,18 @@
 
 This document records all version updates for **MCP Feedback Enhanced**.
 
+## [v3.0.4] - 2026-02-11 - Desktop Auto-Close Restore and Strict MCP Loop Rules
+
+### 🌟 Version Highlights
+This patch restores desktop auto-close behavior after feedback submission and tightens tool usage rules so agents keep interactive feedback calls in a strict loop.
+
+### ✨ Improvements
+- Restored desktop-mode behavior to close the desktop window immediately after feedback is submitted
+- Updated `interactive_feedback` tool usage rules to enforce repeated follow-up calls in all stages
+- Aligned submitted-waiting i18n texts with restored desktop auto-close behavior
+
+---
+
 ## [v3.0.3] - 2026-02-11 - Timeout Safety Hardening
 
 ### 🌟 Version Highlights

@@ -469,12 +469,12 @@ async def interactive_feedback(
 ) -> list:
     """Interactive feedback collection tool for LLM agents.
 
-    USAGE RULES:
-    1. During any process, task, or conversation, whether asking, replying, or completing phased tasks, you must call this tool to ask for feedback.
-    2. All steps must repeatedly call this tool.
-    3. Whenever user feedback is received, you must call this tool again and adjust behavior based on the feedback content.
-    4. Never stop calling this tool, and the process is considered complete.
-    5. You should summarize what have done, and provide project directory through args to let user know what you have done to provide feedback for next step.
+    USAGE RULES (Cursor / LLM strict loop):
+    1. During any process, task, or conversation (asking, replying, planning, coding, refactoring, testing, or finalizing), you must call this tool for user feedback.
+    2. On every iteration, after receiving user feedback, you must continue the task and call this tool again.
+    3. In any situation (including completion, uncertainty, errors, or user saying done), you must call this tool at least one more time before ending your response.
+    4. This tool must remain in an always-on feedback loop; do not stop calling it during the chat lifecycle.
+    5. Every call should include a concise summary of completed work and the project_directory so users can review progress and provide next-step feedback.
 
     Args:
         project_directory: Project directory path for context

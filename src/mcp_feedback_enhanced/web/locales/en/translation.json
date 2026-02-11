@@ -41,7 +41,7 @@
             "paste": "Ctrl+V to paste images (Cmd+V on Mac)"
         },
         "submitSuccess": "Feedback submitted successfully!",
-        "submittedWaiting": "Feedback submitted. Waiting for the next MCP/LLM response. In desktop mode, the window stays open until you close it manually.",
+        "submittedWaiting": "Feedback submitted, waiting for next MCP call...",
         "waitingForUser": "Waiting for user feedback...",
         "alreadySubmitted": "Feedback already submitted, please wait for next MCP call",
         "processingFeedback": "Processing, please wait",

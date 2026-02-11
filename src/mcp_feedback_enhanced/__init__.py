@@ -17,7 +17,7 @@ MCP Interactive Feedback Enhanced
 - 重構的模組化架構
 """
 
-__version__ = "3.0.3"
+__version__ = "3.0.4"
 __author__ = "LeonBuild"
 __email__ = "71315684+LeonBuild@users.noreply.github.com"
 

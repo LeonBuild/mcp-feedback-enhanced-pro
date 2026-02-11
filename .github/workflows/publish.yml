@@ -198,10 +198,10 @@ jobs:
         echo "" >> release_body.md
         echo '```bash' >> release_body.md
         echo "# Latest version / 最新版本" >> release_body.md
-        echo "uvx mcp-feedback-enhanced-pro@latest" >> release_body.md
+        echo "uvx --prerelease=allow mcp-feedback-enhanced-pro@latest" >> release_body.md
         echo "" >> release_body.md
         echo "# This specific version / 此特定版本" >> release_body.md
-        echo "uvx mcp-feedback-enhanced-pro@${NEW_VERSION}" >> release_body.md
+        echo "uvx --prerelease=allow mcp-feedback-enhanced-pro@${NEW_VERSION}" >> release_body.md
         echo '```' >> release_body.md
         echo "" >> release_body.md
         echo "## 🔗 Links" >> release_body.md
@@ -437,7 +437,7 @@ jobs:
         ## 使用方式
 
         僅支援 Web 模式
-        uvx mcp-feedback-enhanced-pro test --web
+        uvx --prerelease=allow mcp-feedback-enhanced-pro test --web
 
         如需桌面應用支援，請使用包含桌面應用的版本。
         EOF
@@ -547,9 +547,9 @@ jobs:
         echo "✅ Next steps:"
         echo "  - Check the release on GitHub"
         echo "  - Verify the package on PyPI"
-        echo "  - Test installation with: uvx mcp-feedback-enhanced-pro@v${{ steps.bump_version.outputs.new }}"
+        echo "  - Test installation with: uvx --prerelease=allow mcp-feedback-enhanced-pro@v${{ steps.bump_version.outputs.new }}"
         if [ "${{ github.event.inputs.include_desktop }}" = "true" ]; then
-          echo "  - Test desktop mode with: uvx mcp-feedback-enhanced-pro@v${{ steps.bump_version.outputs.new }} test --desktop"
+          echo "  - Test desktop mode with: uvx --prerelease=allow mcp-feedback-enhanced-pro@v${{ steps.bump_version.outputs.new }} test --desktop"
         fi
         echo ""
         echo "📋 Note: Make sure CHANGELOG files are updated for future releases"

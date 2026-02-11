@@ -60,10 +60,10 @@ graph TB
 #### 1. 使用 uvx（推薦）
 ```bash
 # 直接運行
-uvx mcp-feedback-enhanced-pro@latest web
+uvx --prerelease=allow mcp-feedback-enhanced-pro@latest web
 
 # 指定版本
-uvx mcp-feedback-enhanced-pro@2.4.3 web
+uvx --prerelease=allow mcp-feedback-enhanced-pro@2.4.3 web
 ```
 
 #### 2. 使用 pip
@@ -578,7 +578,7 @@ cp ~/.mcp-feedback/prompts.json ~/.mcp-feedback/prompts.json.backup
 #### 2. 升級軟體
 ```bash
 # 使用 uvx 升級
-uvx mcp-feedback-enhanced-pro@2.4.3 web
+uvx --prerelease=allow mcp-feedback-enhanced-pro@2.4.3 web
 
 # 或使用 pip 升級
 pip install --upgrade mcp-feedback-enhanced-pro==2.4.3

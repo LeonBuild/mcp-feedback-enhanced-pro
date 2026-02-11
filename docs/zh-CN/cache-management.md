@@ -64,7 +64,7 @@ python scripts/cleanup_cache.py --force
 
 ### 问题：清理后 cache 很快又变大
 
-**原因**：频繁使用 `uvx mcp-feedback-enhanced-pro@latest`
+**原因**：频繁使用 `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest`
 
 **建议**：
 1. **定期清理**：建议每周或每月清理一次

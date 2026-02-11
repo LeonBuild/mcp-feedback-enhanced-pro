@@ -87,7 +87,7 @@ Introducing cross-platform desktop application supporting Windows, macOS, and Li
 ### 📋 Usage Instructions
 - **Desktop Mode**: Set `"MCP_DESKTOP_MODE": "true"` in MCP configuration (refer to `examples/mcp-config-desktop.json`)
 - **Web Mode**: Set `"MCP_DESKTOP_MODE": "false"` in MCP configuration (default, refer to `examples/mcp-config-web.json`)
-- **Test Desktop Mode**: `uvx mcp-feedback-enhanced-pro@latest test --desktop`
+- **Test Desktop Mode**: `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --desktop`
 - **Build Desktop Application**: `make build-desktop-release`
 
 ---

@@ -104,7 +104,7 @@ pip install uv
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "autoApprove": ["interactive_feedback"]
     }
@@ -118,7 +118,7 @@ pip install uv
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DEBUG": "false",
@@ -138,7 +138,7 @@ pip install uv
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",
@@ -196,19 +196,19 @@ follow mcp-feedback-enhanced-pro instructions
 ### Testing Options
 ```bash
 # Version check
-uvx mcp-feedback-enhanced-pro@latest version       # Check version
+uvx --prerelease=allow mcp-feedback-enhanced-pro@latest version       # Check version
 
 # Interface testing
-uvx mcp-feedback-enhanced-pro@latest test --web    # Test Web UI (auto continuous running)
-uvx mcp-feedback-enhanced-pro@latest test --desktop # Test desktop application (v2.5.0 new feature)
+uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --web    # Test Web UI (auto continuous running)
+uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --desktop # Test desktop application (v2.5.0 new feature)
 
 # Debug mode
-MCP_DEBUG=true uvx mcp-feedback-enhanced-pro@latest test
+MCP_DEBUG=true uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test
 
 # Specify language for testing
-MCP_LANGUAGE=en uvx mcp-feedback-enhanced-pro@latest test --web    # Force English interface
-MCP_LANGUAGE=zh-TW uvx mcp-feedback-enhanced-pro@latest test --web  # Force Traditional Chinese
-MCP_LANGUAGE=zh-CN uvx mcp-feedback-enhanced-pro@latest test --web  # Force Simplified Chinese
+MCP_LANGUAGE=en uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --web    # Force English interface
+MCP_LANGUAGE=zh-TW uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --web  # Force Traditional Chinese
+MCP_LANGUAGE=zh-CN uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --web  # Force Simplified Chinese
 ```
 
 ### Developer Installation
@@ -257,7 +257,7 @@ make quick-check                                        # Quick check and auto-f
 📋 **Complete Version History:** [RELEASE_NOTES/CHANGELOG.en.md](RELEASE_NOTES/CHANGELOG.en.md)
 
 ### Latest Version Highlights (v3.0.0)
-- 📦 **Package & Command Rename**: Unified package and CLI entrypoint to `mcp-feedback-enhanced-pro`, enabling direct usage with `uvx mcp-feedback-enhanced-pro@latest`
+- 📦 **Package & Command Rename**: Unified package and CLI entrypoint to `mcp-feedback-enhanced-pro`, enabling direct usage with `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest`
 - ⚙️ **FastMCP 3 Upgrade**: Upgraded runtime baseline to FastMCP 3.x (`fastmcp>=3.0.0b2`) and completed compatibility verification
 - ⏳ **Timeout Hardening + 30-Day Default**: Added safer timeout handling and unified default timeout to 30 days (`2592000` seconds)
 - 🗂️ **Session History Retention Enhancements**: Default retention is now permanent (`0`) with support for manual single-session deletion
@@ -277,7 +277,7 @@ Set `"MCP_WEB_HOST": "0.0.0.0"` in MCP configuration to allow remote access:
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_WEB_HOST": "0.0.0.0",
@@ -316,7 +316,7 @@ A: v2.5.0 introduces cross-platform desktop application support. Set `"MCP_DESKT
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",
@@ -330,14 +330,14 @@ A: v2.5.0 introduces cross-platform desktop application support. Set `"MCP_DESKT
 **Configuration File Example**: [examples/mcp-config-desktop.json](examples/mcp-config-desktop.json)
 
 **Q: How to use legacy PyQt6 GUI interface?**
-A: v2.4.0 completely removed PyQt6 GUI dependencies. To use legacy GUI, specify v2.3.0 or earlier: `uvx mcp-feedback-enhanced-pro@2.3.0`
+A: v2.4.0 completely removed PyQt6 GUI dependencies. To use legacy GUI, specify v2.3.0 or earlier: `uvx --prerelease=allow mcp-feedback-enhanced-pro@2.3.0`
 **Note**: Legacy versions don't include new features (prompt management, auto-submit, session management, desktop application, etc.).
 
 **Q: "Unexpected token 'D'" error appears**
 A: Debug output interference. Set `MCP_DEBUG=false` or remove the environment variable.
 
 **Q: Chinese character garbled text**
-A: Fixed in v2.0.3. Update to latest version: `uvx mcp-feedback-enhanced-pro@latest`
+A: Fixed in v2.0.3. Update to latest version: `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest`
 
 **Q: Window disappears or positioning errors in multi-screen environment**
 A: Fixed in v2.1.1. Go to "⚙️ Settings" tab, check "Always show window at primary screen center" to resolve. Especially suitable for T-shaped screen arrangements and other complex multi-screen configurations.

@@ -83,8 +83,8 @@ ls -la src/mcp_feedback_enhanced/desktop_app/
 
 3. **發佈後驗證**:
    - 檢查 PyPI 上的新版本
-   - 測試安裝: `uvx mcp-feedback-enhanced-pro@latest`
-   - 測試桌面模式: `uvx mcp-feedback-enhanced-pro@latest test --desktop`
+   - 測試安裝: `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest`
+   - 測試桌面模式: `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --desktop`
 
 ## 🚀 一鍵構建和發佈
 

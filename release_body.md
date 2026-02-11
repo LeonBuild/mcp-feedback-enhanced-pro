@@ -20,10 +20,10 @@
 
 ```bash
 # Latest version / 最新版本
-uvx mcp-feedback-enhanced-pro@latest
+uvx --prerelease=allow mcp-feedback-enhanced-pro@latest
 
 # This specific version / 此特定版本
-uvx mcp-feedback-enhanced-pro@v3.0.0
+uvx --prerelease=allow mcp-feedback-enhanced-pro@v3.0.0
 ```
 
 ## 🔗 Links

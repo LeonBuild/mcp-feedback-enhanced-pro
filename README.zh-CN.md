@@ -104,7 +104,7 @@ pip install uv
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "autoApprove": ["interactive_feedback"]
     }
@@ -118,7 +118,7 @@ pip install uv
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DEBUG": "false",
@@ -138,7 +138,7 @@ pip install uv
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",
@@ -196,19 +196,19 @@ pip install uv
 ### 测试选项
 ```bash
 # 版本查询
-uvx mcp-feedback-enhanced-pro@latest version       # 检查版本
+uvx --prerelease=allow mcp-feedback-enhanced-pro@latest version       # 检查版本
 
 # 界面测试
-uvx mcp-feedback-enhanced-pro@latest test --web    # 测试 Web UI (自动持续运行)
-uvx mcp-feedback-enhanced-pro@latest test --desktop # 测试桌面应用程序 (v2.5.0 新功能)
+uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --web    # 测试 Web UI (自动持续运行)
+uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --desktop # 测试桌面应用程序 (v2.5.0 新功能)
 
 # 调试模式
-MCP_DEBUG=true uvx mcp-feedback-enhanced-pro@latest test
+MCP_DEBUG=true uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test
 
 # 指定语言测试
-MCP_LANGUAGE=en uvx mcp-feedback-enhanced-pro@latest test --web    # 强制使用英文界面
-MCP_LANGUAGE=zh-TW uvx mcp-feedback-enhanced-pro@latest test --web  # 强制使用繁体中文
-MCP_LANGUAGE=zh-CN uvx mcp-feedback-enhanced-pro@latest test --web  # 强制使用简体中文
+MCP_LANGUAGE=en uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --web    # 强制使用英文界面
+MCP_LANGUAGE=zh-TW uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --web  # 强制使用繁体中文
+MCP_LANGUAGE=zh-CN uvx --prerelease=allow mcp-feedback-enhanced-pro@latest test --web  # 强制使用简体中文
 ```
 
 ### 开发者安装
@@ -257,7 +257,7 @@ make quick-check                                        # 快速检查并自动�
 📋 **完整版本更新记录：** [RELEASE_NOTES/CHANGELOG.zh-CN.md](RELEASE_NOTES/CHANGELOG.zh-CN.md)
 
 ### 最新版本亮点（v3.0.0）
-- 📦 **包名与命令统一**：统一为 `mcp-feedback-enhanced-pro`，可直接使用 `uvx mcp-feedback-enhanced-pro@latest`
+- 📦 **包名与命令统一**：统一为 `mcp-feedback-enhanced-pro`，可直接使用 `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest`
 - ⚙️ **FastMCP 3 升级**：运行时基线升级到 FastMCP 3.x（`fastmcp>=3.0.0b2`），并完成兼容性验证
 - ⏳ **超时加固与 30 天默认值**：强化超时处理逻辑，并将默认超时统一为 30 天（`2592000` 秒）
 - 🗂️ **会话历史保留增强**：默认改为永久保留（`0`），并支持手动删除单条会话历史
@@ -277,7 +277,7 @@ A: 提供两种解决方案：
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_WEB_HOST": "0.0.0.0",
@@ -316,7 +316,7 @@ A: v2.5.0 新增跨平台桌面应用程序支持。在 MCP 配置中设定 `"MC
   "mcpServers": {
     "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced-pro@latest"],
+      "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",
@@ -330,14 +330,14 @@ A: v2.5.0 新增跨平台桌面应用程序支持。在 MCP 配置中设定 `"MC
 **配置文件示例**：[examples/mcp-config-desktop.json](examples/mcp-config-desktop.json)
 
 **Q: 如何使用旧版 PyQt6 GUI 界面？**
-A: v2.4.0 版本已完全移除 PyQt6 GUI 依赖。如需使用旧版 GUI，请指定 v2.3.0 或更早版本：`uvx mcp-feedback-enhanced-pro@2.3.0`
+A: v2.4.0 版本已完全移除 PyQt6 GUI 依赖。如需使用旧版 GUI，请指定 v2.3.0 或更早版本：`uvx --prerelease=allow mcp-feedback-enhanced-pro@2.3.0`
 **注意**：旧版本不包含新功能（提示词管理、自动提交、会话管理、桌面应用程序等）。
 
 **Q: 出现 "Unexpected token 'D'" 错误**
 A: 调试输出干扰。设置 `MCP_DEBUG=false` 或移除该环境变量。
 
 **Q: 中文字符乱码**
-A: 已在 v2.0.3 修复。更新到最新版本：`uvx mcp-feedback-enhanced-pro@latest`
+A: 已在 v2.0.3 修复。更新到最新版本：`uvx --prerelease=allow mcp-feedback-enhanced-pro@latest`
 
 **Q: 多屏幕环境下窗口消失或定位错误**
 A: 已在 v2.1.1 修复。进入「⚙️ 设置」标签页，勾选「总是在主屏幕中心显示窗口」即可解决。特别适用于 T 字型屏幕排列等复杂多屏幕配置。

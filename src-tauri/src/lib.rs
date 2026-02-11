@@ -31,10 +31,7 @@ pub fn create_tauri_builder() -> Builder<tauri::Wry> {
 
             // 獲取主視窗，先統一設定標題，再根據環境變數決定是否導航
             if let Some(window) = app.get_webview_window("main") {
-                let app_version = std::env::var("MCP_APP_VERSION")
-                    .unwrap_or_else(|_| env!("CARGO_PKG_VERSION").to_string());
-                let window_title = format!("MCP Feedback Enhanced Pro v{}", app_version);
-                let _ = window.set_title(&window_title);
+                let _ = window.set_title("MCP Feedback Enhanced Pro");
 
                 if let Ok(web_url) = std::env::var("MCP_WEB_URL") {
                     println!("檢測到 Web URL: {}", web_url);

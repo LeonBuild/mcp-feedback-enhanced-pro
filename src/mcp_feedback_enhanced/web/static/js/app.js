@@ -33,6 +33,33 @@
         return baseTitle + ' - ' + projectName;
     }
 
+    function syncTauriWindowTitle() {
+        try {
+            const tauriWindow = window.__TAURI__ && window.__TAURI__.window;
+            if (!tauriWindow || typeof tauriWindow.getCurrentWindow !== 'function') {
+                return;
+            }
+
+            const appWindow = tauriWindow.getCurrentWindow();
+            if (appWindow && typeof appWindow.setTitle === 'function') {
+                const maybePromise = appWindow.setTitle(APP_DISPLAY_NAME);
+                if (maybePromise && typeof maybePromise.catch === 'function') {
+                    maybePromise.catch(function(error) {
+                        console.warn('⚠️ 設定 Tauri 視窗標題失敗:', error);
+                    });
+                }
+            }
+        } catch (error) {
+            console.warn('⚠️ 無法同步 Tauri 視窗標題:', error);
+        }
+    }
+
+    function updateWindowTitles(projectDirectory) {
+        document.title = buildWindowTitle(projectDirectory);
+        // Desktop 端原生標題固定為不帶版本的 Pro 名稱。
+        syncTauriWindowTitle();
+    }
+
     /**
      * 主應用程式建構函數
      */
@@ -121,6 +148,7 @@
         const self = this;
 
         console.log('🚀 初始化 MCP Feedback Enhanced 應用程式');
+        syncTauriWindowTitle();
 
         return new Promise(function(resolve, reject) {
             try {
@@ -1010,7 +1038,7 @@
 
             // 更新頁面標題
             if (data.session_info.project_directory) {
-                document.title = buildWindowTitle(data.session_info.project_directory);
+                updateWindowTitles(data.session_info.project_directory);
             }
 
             // 使用局部更新替代整頁刷新
@@ -1057,7 +1085,7 @@
 
         // 更新頁面標題顯示會話信息
         if (statusInfo.project_directory) {
-            document.title = buildWindowTitle(statusInfo.project_directory);
+            updateWindowTitles(statusInfo.project_directory);
         }
 
         // 使用之前已聲明的 sessionId
@@ -1739,7 +1767,7 @@
 
                 // 更新頁面標題
                 if (sessionData.project_directory) {
-                    document.title = buildWindowTitle(sessionData.project_directory);
+                    updateWindowTitles(sessionData.project_directory);
                 }
 
                 console.log('✅ 局部更新完成');

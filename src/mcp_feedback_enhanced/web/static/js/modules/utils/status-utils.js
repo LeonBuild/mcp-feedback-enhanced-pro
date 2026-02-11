@@ -23,11 +23,11 @@
             if (!window.i18nManager) {
                 // 回退到硬編碼文字
                 const fallbackMap = {
-                    'waiting': '等待回饋',
-                    'waiting_for_feedback': '等待回饋',
-                    'active': '進行中',
-                    'feedback_submitted': '已提交回饋',
-                    'completed': '已完成',
+                    'waiting': '待輸入回饋',
+                    'waiting_for_feedback': '待輸入回饋',
+                    'active': '提交中',
+                    'feedback_submitted': '已提交，等待下一輪',
+                    'completed': '會話已完成',
                     'timeout': '已逾時',
                     'error': '錯誤',
                     'expired': '已過期',

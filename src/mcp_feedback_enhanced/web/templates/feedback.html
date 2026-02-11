@@ -518,16 +518,12 @@
         <!-- 詳細統計資訊（頂欄常駐） -->
         <div class="detailed-stats-topbar" id="detailedStatsTopbar">
             <div class="top-stat-item">
-                <span class="top-stat-label" data-i18n="connectionMonitor.connectionTime">連線時間</span>
-                <span class="top-stat-value" id="statsConnectionTime">--:--</span>
-            </div>
-            <div class="top-stat-item">
                 <span class="top-stat-label" data-i18n="connectionMonitor.reconnectCount">重連次數</span>
                 <span class="top-stat-value" id="statsReconnectCount">0</span>
             </div>
             <div class="top-stat-item">
-                <span class="top-stat-label" data-i18n="connectionMonitor.metrics.messages">訊息數</span>
-                <span class="top-stat-value" id="statsMessageCount">0</span>
+                <span class="top-stat-label" data-i18n="connectionMonitor.metrics.messageTraffic">收/發</span>
+                <span class="top-stat-value" id="statsMessageCount">0/0</span>
             </div>
             <div class="top-stat-item">
                 <span class="top-stat-label" data-i18n="connectionMonitor.metrics.latencyMs">延遲</span>
@@ -540,6 +536,10 @@
             <div class="top-stat-item">
                 <span class="top-stat-label" data-i18n="connectionMonitor.statusText">狀態</span>
                 <span class="top-stat-value" id="statsSessionStatus" data-i18n="connectionMonitor.waiting">等待中</span>
+            </div>
+            <div class="top-stat-item">
+                <span class="top-stat-label" data-i18n="connectionMonitor.connectionTime">等待時長(目前會話)</span>
+                <span class="top-stat-value" id="statsConnectionTime">--:--</span>
             </div>
         </div>
 
@@ -1246,46 +1246,46 @@
     <!-- Markdown 支援庫 - 本地版本 -->
     <script src="/static/js/vendor/marked.min.js"></script>
     <script src="/static/js/vendor/purify.min.js"></script>
-    <script src="/static/js/i18n.js?v=2025010510"></script>
+    <script src="/static/js/i18n.js?v=20260212"></script>
     <!-- 載入所有模組 -->
     <!-- 核心模組（最先載入） -->
-    <script src="/static/js/modules/logger.js?v=2025010510"></script>
+    <script src="/static/js/modules/logger.js?v=20260212"></script>
 
     <!-- 工具模組 -->
-    <script src="/static/js/modules/utils/dom-utils.js?v=2025010510"></script>
-    <script src="/static/js/modules/utils/time-utils.js?v=2025010510"></script>
-    <script src="/static/js/modules/utils/status-utils.js?v=2025010510"></script>
+    <script src="/static/js/modules/utils/dom-utils.js?v=20260212"></script>
+    <script src="/static/js/modules/utils/time-utils.js?v=20260212"></script>
+    <script src="/static/js/modules/utils/status-utils.js?v=20260212"></script>
 
     <!-- 會話管理模組 -->
-    <script src="/static/js/modules/session/session-data-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/session/session-ui-renderer.js?v=2025010510"></script>
-    <script src="/static/js/modules/session/session-details-modal.js?v=2025010510"></script>
+    <script src="/static/js/modules/session/session-data-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/session/session-ui-renderer.js?v=20260212"></script>
+    <script src="/static/js/modules/session/session-details-modal.js?v=20260212"></script>
 
     <!-- 提示詞管理模組 -->
-    <script src="/static/js/modules/prompt/prompt-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/prompt/prompt-modal.js?v=2025010510"></script>
-    <script src="/static/js/modules/prompt/prompt-settings-ui.js?v=2025010510"></script>
-    <script src="/static/js/modules/prompt/prompt-input-buttons.js?v=2025010510"></script>
+    <script src="/static/js/modules/prompt/prompt-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/prompt/prompt-modal.js?v=20260212"></script>
+    <script src="/static/js/modules/prompt/prompt-settings-ui.js?v=20260212"></script>
+    <script src="/static/js/modules/prompt/prompt-input-buttons.js?v=20260212"></script>
 
     <!-- 音效管理模組 -->
-    <script src="/static/js/modules/audio/audio-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/audio/audio-settings-ui.js?v=2025010510"></script>
+    <script src="/static/js/modules/audio/audio-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/audio/audio-settings-ui.js?v=20260212"></script>
 
     <!-- 通知模組 -->
-    <script src="/static/js/modules/notification/notification-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/notification/notification-settings.js?v=2025010510"></script>
+    <script src="/static/js/modules/notification/notification-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/notification/notification-settings.js?v=20260212"></script>
 
     <!-- 其他模組 -->
-    <script src="/static/js/modules/utils.js?v=2025010510"></script>
-    <script src="/static/js/modules/tab-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/websocket-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/connection-monitor.js?v=2025010510"></script>
-    <script src="/static/js/modules/session-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/file-upload-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/image-handler.js?v=2025010510"></script>
-    <script src="/static/js/modules/settings-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/ui-manager.js?v=2025010510"></script>
-    <script src="/static/js/modules/textarea-height-manager.js?v=2025010510"></script>
+    <script src="/static/js/modules/utils.js?v=20260212"></script>
+    <script src="/static/js/modules/tab-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/websocket-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/connection-monitor.js?v=20260212"></script>
+    <script src="/static/js/modules/session-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/file-upload-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/image-handler.js?v=20260212"></script>
+    <script src="/static/js/modules/settings-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/ui-manager.js?v=20260212"></script>
+    <script src="/static/js/modules/textarea-height-manager.js?v=20260212"></script>
 
     <!-- 注入應用版本（供視窗標題與前端顯示使用） -->
     <script>
@@ -1294,7 +1294,7 @@
     </script>
 
     <!-- 主應用程式 -->
-    <script src="/static/js/app.js?v=20260211"></script>
+    <script src="/static/js/app.js?v=20260212"></script>
     <script>
         // 等待所有模組載入完成後再初始化 FeedbackApp
         async function initializeApp() {

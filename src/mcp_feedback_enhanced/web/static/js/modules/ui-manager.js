@@ -328,15 +328,15 @@
         switch (this.feedbackState) {
             case Utils.CONSTANTS.FEEDBACK_WAITING:
                 icon = '⏳';
-                title = window.i18nManager ? window.i18nManager.t('status.waiting.title') : '等待回饋';
-                message = window.i18nManager ? window.i18nManager.t('status.waiting.message') : '請提供您的回饋意見';
+                title = window.i18nManager ? window.i18nManager.t('status.waiting.title') : '待您輸入回饋';
+                message = window.i18nManager ? window.i18nManager.t('status.waiting.message') : '請在右側輸入並提交回饋';
                 status = 'waiting';
                 break;
 
             case Utils.CONSTANTS.FEEDBACK_PROCESSING:
                 icon = '⚙️';
-                title = window.i18nManager ? window.i18nManager.t('status.processing.title') : '處理中';
-                message = window.i18nManager ? window.i18nManager.t('status.processing.message') : '正在提交您的回饋...';
+                title = window.i18nManager ? window.i18nManager.t('status.processing.title') : '正在提交回饋';
+                message = window.i18nManager ? window.i18nManager.t('status.processing.message') : '系統正在處理您剛提交的內容';
                 status = 'processing';
                 break;
 
@@ -344,8 +344,8 @@
                 const timeStr = this.lastSubmissionTime ?
                     new Date(this.lastSubmissionTime).toLocaleTimeString() : '';
                 icon = '✅';
-                title = window.i18nManager ? window.i18nManager.t('status.submitted.title') : '回饋已提交';
-                message = window.i18nManager ? window.i18nManager.t('status.submitted.message') : '等待下次 MCP 調用';
+                title = window.i18nManager ? window.i18nManager.t('status.submitted.title') : '已提交，等待下一輪';
+                message = window.i18nManager ? window.i18nManager.t('status.submitted.message') : '本輪已完成，等待下一次 MCP 調用';
                 if (timeStr) {
                     message += ' (' + timeStr + ')';
                 }
@@ -354,8 +354,8 @@
 
             default:
                 icon = '⏳';
-                title = window.i18nManager ? window.i18nManager.t('status.waiting.title') : '等待回饋';
-                message = window.i18nManager ? window.i18nManager.t('status.waiting.message') : '請提供您的回饋意見';
+                title = window.i18nManager ? window.i18nManager.t('status.waiting.title') : '待您輸入回饋';
+                message = window.i18nManager ? window.i18nManager.t('status.waiting.message') : '請在右側輸入並提交回饋';
                 status = 'waiting';
         }
 

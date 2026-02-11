@@ -159,7 +159,11 @@
             if (data) {
                 // 記錄訊息到監控器
                 if (this.connectionMonitor) {
-                    this.connectionMonitor.recordMessage();
+                    if (this.connectionMonitor.recordIncomingMessage) {
+                        this.connectionMonitor.recordIncomingMessage();
+                    } else {
+                        this.connectionMonitor.recordMessage();
+                    }
                 }
 
                 this.processMessage(data);
@@ -339,6 +343,13 @@
         if (this.websocket && this.websocket.readyState === WebSocket.OPEN) {
             try {
                 this.websocket.send(JSON.stringify(data));
+                if (this.connectionMonitor) {
+                    if (this.connectionMonitor.recordOutgoingMessage) {
+                        this.connectionMonitor.recordOutgoingMessage();
+                    } else {
+                        this.connectionMonitor.recordMessage('outgoing');
+                    }
+                }
                 return true;
             } catch (error) {
                 console.error('發送 WebSocket 訊息失敗:', error);

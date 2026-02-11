@@ -172,20 +172,20 @@
         "reconnecting": "Reconnecting...",
         "error": "Connection Error",
         "waiting": {
-            "title": "Waiting for Feedback",
-            "message": "Please provide your feedback"
+            "title": "Awaiting Your Feedback",
+            "message": "Please enter and submit feedback on the right panel"
         },
         "processing": {
-            "title": "Processing",
-            "message": "Submitting your feedback..."
+            "title": "Submitting Feedback",
+            "message": "Your latest submission is being processed"
         },
         "submitted": {
-            "title": "Submitted",
-            "message": "Waiting for next MCP call"
+            "title": "Submitted - Waiting Next Turn",
+            "message": "This round is done, waiting for the next MCP call"
         },
         "completed": {
-            "title": "Completed",
-            "message": "Session completed"
+            "title": "Session Completed",
+            "message": "Current session flow has finished"
         }
     },
     "notifications": {
@@ -196,9 +196,9 @@
         "connection_restored": "Connection restored"
     },
     "connection": {
-        "waiting": "Connected - Waiting for feedback",
-        "submitted": "Connected - Feedback submitted",
-        "processing": "Connected - Processing"
+        "waiting": "Connected - Awaiting feedback",
+        "submitted": "Connected - Submitted, waiting next turn",
+        "processing": "Connected - Submitting feedback"
     },
     "errors": {
         "connection_failed": "Connection failed",
@@ -348,14 +348,14 @@
         "noActiveSession": "No active session",
         "maxReconnectReached": "WebSocket connection failed, please refresh the page to retry",
         "latency": "Latency",
-        "connectionTime": "Connection Time",
-        "reconnectCount": "Reconnects",
+        "connectionTime": "Waiting Time (Current Session)",
+        "reconnectCount": "Reconnect Count",
         "messageCount": "Messages",
         "sessionCount": "Sessions",
-        "statusText": "Status",
+        "statusText": "Session State",
         "toolCallsUsed": "Tools Call",
         "toolCallsTooltip": "Current chat tools call usage",
-        "waiting": "Waiting",
+        "waiting": "Awaiting feedback",
         "times": "times",
         "quality": {
             "excellent": "Excellent",
@@ -365,7 +365,8 @@
             "unknown": "Unknown"
         },
         "metrics": {
-            "messages": "Messages",
+            "messages": "Message Total",
+            "messageTraffic": "Rx/Tx",
             "latencyMs": "Latency",
             "sessions": "Sessions",
             "reconnects": "Reconnects"

@@ -178,20 +178,20 @@
         "reconnecting": "重新連線中...",
         "error": "連線錯誤",
         "waiting": {
-            "title": "等待回饋",
-            "message": "請提供您的回饋意見"
+            "title": "待您輸入回饋",
+            "message": "請在右側輸入並提交回饋"
         },
         "processing": {
-            "title": "處理中",
-            "message": "正在提交您的回饋..."
+            "title": "正在提交回饋",
+            "message": "系統正在處理您剛提交的內容"
         },
         "submitted": {
-            "title": "回饋已提交",
-            "message": "等待下次 MCP 調用"
+            "title": "已提交，等待下一輪",
+            "message": "本輪已完成，等待下一次 MCP 調用"
         },
         "completed": {
-            "title": "已完成",
-            "message": "會話已完成"
+            "title": "會話已完成",
+            "message": "目前會話流程已結束"
         }
     },
     "notifications": {
@@ -202,9 +202,9 @@
         "connection_restored": "連線已恢復"
     },
     "connection": {
-        "waiting": "已連線 - 等待回饋",
-        "submitted": "已連線 - 反饋已提交",
-        "processing": "已連線 - 處理中"
+        "waiting": "已連線 - 待輸入回饋",
+        "submitted": "已連線 - 已提交，等待下一輪",
+        "processing": "已連線 - 正在提交回饋"
     },
     "errors": {
         "connection_failed": "連線失敗",
@@ -355,14 +355,14 @@
         "noActiveSession": "沒有活躍會話",
         "maxReconnectReached": "WebSocket 連接失敗，請刷新頁面重試",
         "latency": "延遲",
-        "connectionTime": "連線時間",
-        "reconnectCount": "重連",
+        "connectionTime": "等待時長(目前會話)",
+        "reconnectCount": "重連次數",
         "messageCount": "訊息",
         "sessionCount": "會話",
-        "statusText": "狀態",
+        "statusText": "會話狀態",
         "toolCallsUsed": "Tools Call",
         "toolCallsTooltip": "目前 chat 已用 tools call 統計",
-        "waiting": "等待中",
+        "waiting": "待輸入回饋",
         "times": "次",
         "quality": {
             "excellent": "優秀",
@@ -372,7 +372,8 @@
             "unknown": "未知"
         },
         "metrics": {
-            "messages": "訊息",
+            "messages": "訊息總數",
+            "messageTraffic": "收/發",
             "latencyMs": "延遲",
             "sessions": "會話",
             "reconnects": "重連"

@@ -26,6 +26,9 @@
         this.maxLatencyHistory = 20;
         this.reconnectCount = 0;
         this.messageCount = 0;
+        this.messageRxCount = 0;
+        this.messageTxCount = 0;
+        this.displayUpdateTimer = null;
         
         // 連線品質指標
         this.currentLatency = 0;
@@ -78,7 +81,10 @@
         this.connectionStartTime = Date.now();
         this.reconnectCount = 0;
         this.messageCount = 0;
+        this.messageRxCount = 0;
+        this.messageTxCount = 0;
         this.latencyHistory = [];
+        this.startDisplayUpdateTimer();
         
         console.log('🔍 開始連線監控');
         this.updateDisplay();
@@ -91,6 +97,7 @@
         this.isMonitoring = false;
         this.connectionStartTime = null;
         this.lastPingTime = null;
+        this.stopDisplayUpdateTimer();
         
         console.log('🔍 停止連線監控');
         this.updateDisplay();
@@ -225,9 +232,51 @@
     /**
      * 記錄訊息
      */
-    ConnectionMonitor.prototype.recordMessage = function() {
-        this.messageCount++;
+    ConnectionMonitor.prototype.recordMessage = function(direction) {
+        if (direction === 'outgoing') {
+            this.messageTxCount++;
+        } else {
+            this.messageRxCount++;
+        }
+        this.messageCount = this.messageRxCount + this.messageTxCount;
         this.updateDisplay();
+    };
+
+    /**
+     * 記錄收到的訊息（Rx）
+     */
+    ConnectionMonitor.prototype.recordIncomingMessage = function() {
+        this.recordMessage('incoming');
+    };
+
+    /**
+     * 記錄送出的訊息（Tx）
+     */
+    ConnectionMonitor.prototype.recordOutgoingMessage = function() {
+        this.recordMessage('outgoing');
+    };
+
+    /**
+     * 啟動顯示更新計時器（每秒刷新連線時長）
+     */
+    ConnectionMonitor.prototype.startDisplayUpdateTimer = function() {
+        this.stopDisplayUpdateTimer();
+        const self = this;
+        this.displayUpdateTimer = setInterval(function() {
+            if (self.isMonitoring) {
+                self.updateDisplay();
+            }
+        }, 1000);
+    };
+
+    /**
+     * 停止顯示更新計時器
+     */
+    ConnectionMonitor.prototype.stopDisplayUpdateTimer = function() {
+        if (this.displayUpdateTimer) {
+            clearInterval(this.displayUpdateTimer);
+            this.displayUpdateTimer = null;
+        }
     };
 
     /**
@@ -352,14 +401,15 @@
         }
         
         // 更新訊息計數
+        const messageTrafficText = this.messageRxCount + '/' + this.messageTxCount;
         if (this.messageCountDisplay) {
-            this.messageCountDisplay.textContent = this.messageCount;
+            this.messageCountDisplay.textContent = messageTrafficText;
         }
         
         // 更新統計面板中的訊息計數
         const statsMessageCount = document.getElementById('statsMessageCount');
         if (statsMessageCount) {
-            statsMessageCount.textContent = this.messageCount.toString();
+            statsMessageCount.textContent = messageTrafficText;
         }
         
         // 更新統計面板中的會話數和狀態
@@ -388,6 +438,8 @@
             connectionQuality: this.connectionQuality,
             reconnectCount: this.reconnectCount,
             messageCount: this.messageCount,
+            messageRxCount: this.messageRxCount,
+            messageTxCount: this.messageTxCount,
             latencyHistory: this.latencyHistory.slice() // 複製陣列
         };
     };
@@ -398,6 +450,8 @@
     ConnectionMonitor.prototype.resetStats = function() {
         this.reconnectCount = 0;
         this.messageCount = 0;
+        this.messageRxCount = 0;
+        this.messageTxCount = 0;
         this.latencyHistory = [];
         this.currentLatency = 0;
         this.averageLatency = 0;

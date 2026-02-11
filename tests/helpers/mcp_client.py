@@ -5,7 +5,9 @@ MCP 客戶端模擬器 - 簡化版本
 
 import asyncio
 import json
+import queue
 import subprocess
+import threading
 from pathlib import Path
 from typing import Any
 
@@ -22,6 +24,9 @@ class SimpleMCPClient:
         self.stdout: Any = None
         self.stderr: Any = None
         self.initialized = False
+        self._stdout_queue: queue.Queue[str | None] = queue.Queue()
+        self._stdout_reader_thread: threading.Thread | None = None
+        self._stdout_reader_stop_event = threading.Event()
 
     async def start_server(self) -> bool:
         """啟動 MCP 服務器"""
@@ -51,6 +56,7 @@ class SimpleMCPClient:
             if self.server_process.poll() is not None:
                 return False
 
+            self._start_stdout_reader()
             return True
 
         except Exception as e:
@@ -133,32 +139,73 @@ class SimpleMCPClient:
         self.stdin.write(request_str)
         self.stdin.flush()
 
+    def _start_stdout_reader(self):
+        """啟動 stdout 背景讀取執行緒。"""
+        self._stdout_queue = queue.Queue()
+        self._stdout_reader_stop_event.clear()
+        self._stdout_reader_thread = threading.Thread(
+            target=self._stdout_reader_loop,
+            name="mcp-test-stdout-reader",
+            daemon=True,
+        )
+        self._stdout_reader_thread.start()
+
+    def _stdout_reader_loop(self):
+        """持續讀取 stdout 並推送到佇列。"""
+        if not self.stdout:
+            return
+
+        try:
+            while not self._stdout_reader_stop_event.is_set():
+                line = self.stdout.readline()
+                if not line:
+                    break
+                self._stdout_queue.put(line)
+        finally:
+            self._stdout_queue.put(None)
+
+    def _stop_stdout_reader(self):
+        """停止 stdout 背景讀取執行緒。"""
+        self._stdout_reader_stop_event.set()
+        if self._stdout_reader_thread and self._stdout_reader_thread.is_alive():
+            self._stdout_reader_thread.join(timeout=1)
+        self._stdout_reader_thread = None
+
     async def _read_response(self, timeout: int = 30) -> dict[str, Any] | None:
         """讀取回應"""
         if not self.stdout:
             raise RuntimeError("stdout 不可用")
 
-        try:
-            # 使用 asyncio 超時
-            response_line = await asyncio.wait_for(
-                asyncio.to_thread(self.stdout.readline), timeout=timeout
-            )
+        loop = asyncio.get_running_loop()
+        deadline = loop.time() + timeout
 
-            if response_line:
-                response_data = json.loads(response_line.strip())
-                # 修復 no-any-return 錯誤 - 確保返回明確類型
-                return (
-                    dict(response_data)
-                    if isinstance(response_data, dict)
-                    else response_data
+        while True:
+            remaining = deadline - loop.time()
+            if remaining <= 0:
+                raise TimeoutError()
+
+            try:
+                response_line = await asyncio.to_thread(
+                    self._stdout_queue.get, True, min(remaining, 0.5)
                 )
-            return None
+            except queue.Empty:
+                continue
 
-        except TimeoutError:
-            raise
-        except json.JSONDecodeError as e:
-            print(f"JSON 解析錯誤: {e}, 原始數據: {response_line}")
-            return None
+            if response_line is None:
+                return None
+
+            response_line = response_line.strip()
+            if not response_line:
+                continue
+
+            try:
+                response_data = json.loads(response_line)
+            except json.JSONDecodeError as e:
+                print(f"JSON 解析錯誤: {e}, 原始數據: {response_line}")
+                continue
+
+            # 修復 no-any-return 錯誤 - 確保返回明確類型
+            return dict(response_data) if isinstance(response_data, dict) else response_data
 
     async def cleanup(self):
         """清理資源"""
@@ -179,12 +226,13 @@ class SimpleMCPClient:
 
             except Exception as e:
                 print(f"清理 MCP 服務器失敗: {e}")
-            finally:
-                self.server_process = None
-                self.stdin = None
-                self.stdout = None
-                self.stderr = None
-                self.initialized = False
+
+        self._stop_stdout_reader()
+        self.server_process = None
+        self.stdin = None
+        self.stdout = None
+        self.stderr = None
+        self.initialized = False
 
 
 class MCPWorkflowTester:

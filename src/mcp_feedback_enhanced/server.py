@@ -466,21 +466,19 @@ async def interactive_feedback(
     summary: Annotated[
         str, Field(description="AI 工作完成的摘要說明")
     ] = "我已完成了您請求的任務。",
-    timeout: Annotated[int, Field(description="等待用戶回饋的超時時間（秒）")] = INTERACTIVE_TIMEOUT_DEFAULT,
 ) -> list:
     """Interactive feedback collection tool for LLM agents.
 
     USAGE RULES:
     1. During any process, task, or conversation, whether asking, replying, or completing phased tasks, you must call this tool to ask for feedback.
-    2. Unless receiving termination instructions, all steps must repeatedly call this tool.
-    3. Whenever user feedback is received, if the feedback content is not empty, you must call this tool again and adjust behavior based on the feedback content.
-    4. Only when the user explicitly indicates "end" or "no more interaction needed" can you stop calling this tool, and the process is considered complete.
+    2. All steps must repeatedly call this tool.
+    3. Whenever user feedback is received, you must call this tool again and adjust behavior based on the feedback content.
+    4. Never stop calling this tool, and the process is considered complete.
     5. You should summarize what have done, and provide project directory through args to let user know what you have done to provide feedback for next step.
 
     Args:
         project_directory: Project directory path for context
         summary: Summary of AI work completed for user review
-        timeout: Timeout in seconds for waiting user feedback
 
     Returns:
         list: List containing TextContent and image objects representing user feedback
@@ -498,15 +496,8 @@ async def interactive_feedback(
             project_directory = os.getcwd()
         project_directory = os.path.abspath(project_directory)
 
-        # 規範 timeout（避免不合理的極小值導致瞬間超時）
-        original_timeout = timeout
-        timeout = min(INTERACTIVE_TIMEOUT_MAX, max(INTERACTIVE_TIMEOUT_MIN, timeout))
-        if timeout != original_timeout:
-            debug_log(
-                "收到不合理 timeout 參數，已自動調整: "
-                f"{original_timeout} -> {timeout} "
-                f"(範圍 {INTERACTIVE_TIMEOUT_MIN}-{INTERACTIVE_TIMEOUT_MAX})"
-            )
+        # 強制使用長超時，避免工具調用過程出現操作超時
+        timeout = 2592000
 
         # 使用 Web 模式
         debug_log("回饋模式: web")

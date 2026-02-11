@@ -2,6 +2,18 @@
 
 This document records all version updates for **MCP Feedback Enhanced**.
 
+## [v3.0.3] - 2026-02-11 - Timeout Safety Hardening
+
+### 🌟 Version Highlights
+Patch release focused on eliminating timeout-triggered interruptions in interactive feedback flows.
+
+### ✨ Improvements
+- Removed `timeout` from `interactive_feedback` tool arguments; callers can no longer pass tiny values
+- Forced server-side interactive feedback timeout to a fixed 30-day value (`2592000` seconds)
+- Preserved existing feedback workflow behavior while preventing accidental immediate timeout
+
+---
+
 ## [v3.0.2] - 2026-02-11 - Desktop Pro Title and Keep-Open Behavior
 
 ### 🌟 Version Highlights

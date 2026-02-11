@@ -256,7 +256,7 @@ make quick-check                                        # 快速检查并自动�
 
 📋 **完整版本更新记录：** [RELEASE_NOTES/CHANGELOG.zh-CN.md](RELEASE_NOTES/CHANGELOG.zh-CN.md)
 
-### 最新版本亮点（v3.0.2）
+### 最新版本亮点（v3.0.3）
 - 📦 **包名与命令统一**：统一为 `mcp-feedback-enhanced-pro`，可直接使用 `uvx --prerelease=allow mcp-feedback-enhanced-pro@latest`
 - ⚙️ **FastMCP 3 升级**：运行时基线升级到 FastMCP 3.x（`fastmcp>=3.0.0b2`），并完成兼容性验证
 - ⏳ **超时加固与 30 天默认值**：强化超时处理逻辑，并将默认超时统一为 30 天（`2592000` 秒）

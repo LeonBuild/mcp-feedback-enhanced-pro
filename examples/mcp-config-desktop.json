@@ -1,8 +1,8 @@
 {
   "mcpServers": {
-    "mcp-feedback-enhanced": {
+    "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced@latest"],
+      "args": ["mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",

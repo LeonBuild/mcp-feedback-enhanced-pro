@@ -372,9 +372,17 @@ class ResourceManager:
                     files_to_remove.add(file_path)
                     continue
 
+                # max_age <= 0 表示強制清理所有被追蹤文件
+                if max_age <= 0:
+                    os.remove(file_path)
+                    files_to_remove.add(file_path)
+                    cleaned_count += 1
+                    debug_log(f"強制清理臨時文件: {file_path}")
+                    continue
+
                 # 檢查文件年齡
                 file_age = current_time - os.path.getmtime(file_path)
-                if file_age > max_age:
+                if file_age >= max_age:
                     os.remove(file_path)
                     files_to_remove.add(file_path)
                     cleaned_count += 1

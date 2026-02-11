@@ -65,7 +65,7 @@ MCP Feedback Enhanced 預設使用端口 **8765**，您也可以自定義端口�
 ## 重要提醒
 
 ### ⚠️ 不要手動啟動
-**請勿**手動執行 `uvx mcp-feedback-enhanced test --web` 等指令，這樣無法與 MCP 系統整合。
+**請勿**手動執行 `uvx mcp-feedback-enhanced-pro test --web` 等指令，這樣無法與 MCP 系統整合。
 
 ### ✅ 正確流程
 1. 等待 AI 模型呼叫 MCP 工具

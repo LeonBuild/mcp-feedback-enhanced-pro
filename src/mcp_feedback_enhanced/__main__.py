@@ -183,7 +183,7 @@ def process_feedback(data):
 4. 渲染內容
 
 #### 連結和引用
-- 專案連結：[MCP Feedback Enhanced](https://github.com/example/mcp-feedback-enhanced)
+- 專案連結：[MCP Feedback Enhanced](https://github.com/example/mcp-feedback-enhanced-pro)
 - 文檔連結：[Marked.js 官方文檔](https://marked.js.org/)
 
 > **重要提示：** 所有 HTML 輸出都經過 DOMPurify 清理，確保安全性。
@@ -317,7 +317,7 @@ def test_desktop_app():
                 print("💡 可能的原因：")
                 print("   1. 此版本不包含桌面應用程式二進制檔案")
                 print("   2. 請使用包含桌面應用的版本，或使用 Web 模式")
-                print("   3. Web 模式指令：uvx mcp-feedback-enhanced test --web")
+                print("   3. Web 模式指令：uvx mcp-feedback-enhanced-pro test --web")
                 return False
 
             print("✅ 桌面應用程式模組導入成功")
@@ -412,7 +412,7 @@ def show_version():
 
     print(f"MCP Feedback Enhanced Enhanced v{__version__}")
     print(f"作者: {__author__}")
-    print("GitHub: https://github.com/Minidoracat/mcp-feedback-enhanced")
+    print("GitHub: https://github.com/LeonBuild/mcp-feedback-enhanced-pro")
 
 
 if __name__ == "__main__":

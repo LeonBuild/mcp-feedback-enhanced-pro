@@ -21,7 +21,7 @@
 **支援平台：** [Cursor](https://www.cursor.com) | [Cline](https://cline.bot) | [Windsurf](https://windsurf.com) | [Augment](https://www.augmentcode.com) | [Trae](https://www.trae.ai)
 
 ### 🔄 工作流程
-1. **AI 調用** → `mcp-feedback-enhanced` 工具
+1. **AI 調用** → `mcp-feedback-enhanced-pro` 工具
 2. **介面啟動** → 自動開啟桌面應用程式或瀏覽器介面（根據配置）
 3. **智能互動** → 提示詞選擇、文字輸入、圖片上傳、自動提交
 4. **即時回饋** → WebSocket 連線即時傳遞資訊給 AI
@@ -101,9 +101,9 @@ pip install uv
 ```json
 {
   "mcpServers": {
-    "mcp-feedback-enhanced": {
+    "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced@latest"],
+      "args": ["mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "autoApprove": ["interactive_feedback"]
     }
@@ -115,9 +115,9 @@ pip install uv
 ```json
 {
   "mcpServers": {
-    "mcp-feedback-enhanced": {
+    "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced@latest"],
+      "args": ["mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DEBUG": "false",
@@ -135,9 +135,9 @@ pip install uv
 ```json
 {
   "mcpServers": {
-    "mcp-feedback-enhanced": {
+    "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced@latest"],
+      "args": ["mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",
@@ -161,7 +161,7 @@ pip install uv
 ```
 # MCP Interactive Feedback 規則
 
-注意在任務完成前根據mcp-feedback-enhanced工具的要求進行工具調用
+注意在任務完成前根據mcp-feedback-enhanced-pro工具的要求進行工具調用
 ```
 
 ## ⚙️ 進階設定
@@ -195,25 +195,25 @@ pip install uv
 ### 測試選項
 ```bash
 # 版本查詢
-uvx mcp-feedback-enhanced@latest version       # 檢查版本
+uvx mcp-feedback-enhanced-pro@latest version       # 檢查版本
 
 # 介面測試
-uvx mcp-feedback-enhanced@latest test --web    # 測試 Web UI (自動持續運行)
-uvx mcp-feedback-enhanced@latest test --desktop # 測試桌面應用程式 (v2.5.0 新功能)
+uvx mcp-feedback-enhanced-pro@latest test --web    # 測試 Web UI (自動持續運行)
+uvx mcp-feedback-enhanced-pro@latest test --desktop # 測試桌面應用程式 (v2.5.0 新功能)
 
 # 調試模式
-MCP_DEBUG=true uvx mcp-feedback-enhanced@latest test
+MCP_DEBUG=true uvx mcp-feedback-enhanced-pro@latest test
 
 # 指定語言測試
-MCP_LANGUAGE=en uvx mcp-feedback-enhanced@latest test --web    # 強制使用英文介面
-MCP_LANGUAGE=zh-TW uvx mcp-feedback-enhanced@latest test --web  # 強制使用繁體中文
-MCP_LANGUAGE=zh-CN uvx mcp-feedback-enhanced@latest test --web  # 強制使用簡體中文
+MCP_LANGUAGE=en uvx mcp-feedback-enhanced-pro@latest test --web    # 強制使用英文介面
+MCP_LANGUAGE=zh-TW uvx mcp-feedback-enhanced-pro@latest test --web  # 強制使用繁體中文
+MCP_LANGUAGE=zh-CN uvx mcp-feedback-enhanced-pro@latest test --web  # 強制使用簡體中文
 ```
 
 ### 開發者安裝
 ```bash
-git clone https://github.com/Minidoracat/mcp-feedback-enhanced.git
-cd mcp-feedback-enhanced
+git clone https://github.com/LeonBuild/mcp-feedback-enhanced-pro.git
+cd mcp-feedback-enhanced-pro
 uv sync
 ```
 
@@ -226,8 +226,8 @@ make test-desktop-func                                   # 桌面應用功能測
 
 # 或直接使用指令
 uv run python -m mcp_feedback_enhanced test              # 標準功能測試
-uvx --no-cache --with-editable . mcp-feedback-enhanced test --web   # Web UI 測試 (持續運行)
-uvx --no-cache --with-editable . mcp-feedback-enhanced test --desktop # 桌面應用測試
+uvx --no-cache --with-editable . mcp-feedback-enhanced-pro test --web   # Web UI 測試 (持續運行)
+uvx --no-cache --with-editable . mcp-feedback-enhanced-pro test --desktop # 桌面應用測試
 
 # 桌面應用構建 (v2.5.0 新功能)
 make build-desktop                                       # 構建桌面應用 (debug 模式)
@@ -276,9 +276,9 @@ A: 提供兩種解決方案：
 ```json
 {
   "mcpServers": {
-    "mcp-feedback-enhanced": {
+    "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced@latest"],
+      "args": ["mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_WEB_HOST": "0.0.0.0",
@@ -315,9 +315,9 @@ A: v2.5.0 新增跨平台桌面應用程式支援。在 MCP 配置中設定 `"MC
 ```json
 {
   "mcpServers": {
-    "mcp-feedback-enhanced": {
+    "mcp-feedback-enhanced-pro": {
       "command": "uvx",
-      "args": ["mcp-feedback-enhanced@latest"],
+      "args": ["mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",
@@ -331,14 +331,14 @@ A: v2.5.0 新增跨平台桌面應用程式支援。在 MCP 配置中設定 `"MC
 **配置檔案範例**：[examples/mcp-config-desktop.json](examples/mcp-config-desktop.json)
 
 **Q: 如何使用舊版 PyQt6 GUI 介面？**
-A: v2.4.0 版本已完全移除 PyQt6 GUI 依賴。如需使用舊版 GUI，請指定 v2.3.0 或更早版本：`uvx mcp-feedback-enhanced@2.3.0`
+A: v2.4.0 版本已完全移除 PyQt6 GUI 依賴。如需使用舊版 GUI，請指定 v2.3.0 或更早版本：`uvx mcp-feedback-enhanced-pro@2.3.0`
 **注意**：舊版本不包含新功能（提示詞管理、自動提交、會話管理、桌面應用程式等）。
 
 **Q: 出現 "Unexpected token 'D'" 錯誤**
 A: 調試輸出干擾。設置 `MCP_DEBUG=false` 或移除該環境變數。
 
 **Q: 中文字符亂碼**
-A: 已在 v2.0.3 修復。更新到最新版本：`uvx mcp-feedback-enhanced@latest`
+A: 已在 v2.0.3 修復。更新到最新版本：`uvx mcp-feedback-enhanced-pro@latest`
 
 **Q: 多螢幕環境下視窗消失或定位錯誤**
 A: 已在 v2.1.1 修復。進入「⚙️ 設定」分頁，勾選「總是在主螢幕中心顯示視窗」即可解決。特別適用於 T 字型螢幕排列等複雜多螢幕配置。
@@ -390,20 +390,20 @@ A: 各種 AI 模型（包括 Gemini Pro 2.5、Claude 等）在圖片解析上可
 
 ### 貢獻者
 **penn201500** - [GitHub @penn201500](https://github.com/penn201500)
-- 🎯 自動聚焦輸入框功能 ([PR #39](https://github.com/Minidoracat/mcp-feedback-enhanced/pull/39))
+- 🎯 自動聚焦輸入框功能 ([PR #39](https://github.com/LeonBuild/mcp-feedback-enhanced-pro/pull/39))
 
 **leo108** - [GitHub @leo108](https://github.com/leo108)
-- 🌐 SSH 遠端開發支援 (`MCP_WEB_HOST` 環境變數) ([PR #113](https://github.com/Minidoracat/mcp-feedback-enhanced/pull/113))
+- 🌐 SSH 遠端開發支援 (`MCP_WEB_HOST` 環境變數) ([PR #113](https://github.com/LeonBuild/mcp-feedback-enhanced-pro/pull/113))
 
 **Alsan** - [GitHub @Alsan](https://github.com/Alsan)
-- 🍎 macOS PyO3 編譯配置支援 ([PR #93](https://github.com/Minidoracat/mcp-feedback-enhanced/pull/93))
+- 🍎 macOS PyO3 編譯配置支援 ([PR #93](https://github.com/LeonBuild/mcp-feedback-enhanced-pro/pull/93))
 
 **fireinice** - [GitHub @fireinice](https://github.com/fireinice)
-- 📝 工具文檔優化 (LLM 指令移至 docstring) ([PR #105](https://github.com/Minidoracat/mcp-feedback-enhanced/pull/105))
+- 📝 工具文檔優化 (LLM 指令移至 docstring) ([PR #105](https://github.com/LeonBuild/mcp-feedback-enhanced-pro/pull/105))
 
 ### 社群支援
 - **Discord：** [https://discord.gg/Gur2V67](https://discord.gg/Gur2V67)
-- **Issues：** [GitHub Issues](https://github.com/Minidoracat/mcp-feedback-enhanced/issues)
+- **Issues：** [GitHub Issues](https://github.com/LeonBuild/mcp-feedback-enhanced-pro/issues)
 
 ## 📄 授權
 
@@ -411,7 +411,7 @@ MIT 授權條款 - 詳見 [LICENSE](LICENSE) 檔案
 
 ## 📈 Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=Minidoracat/mcp-feedback-enhanced&type=Date)](https://star-history.com/#Minidoracat/mcp-feedback-enhanced&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=LeonBuild/mcp-feedback-enhanced-pro&type=Date)](https://star-history.com/#LeonBuild/mcp-feedback-enhanced-pro&Date)
 
 ---
 **🌟 歡迎 Star 並分享給更多開發者！**

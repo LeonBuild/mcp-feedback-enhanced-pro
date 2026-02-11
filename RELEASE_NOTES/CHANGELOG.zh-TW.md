@@ -119,7 +119,7 @@
 ### 📋 使用說明
 - **桌面模式**: 在 MCP 配置中設定 `"MCP_DESKTOP_MODE": "true"` (參考 `examples/mcp-config-desktop.json`)
 - **Web 模式**: 在 MCP 配置中設定 `"MCP_DESKTOP_MODE": "false"` (預設，參考 `examples/mcp-config-web.json`)
-- **測試桌面模式**: `uvx mcp-feedback-enhanced@latest test --desktop`
+- **測試桌面模式**: `uvx mcp-feedback-enhanced-pro@latest test --desktop`
 - **構建桌面應用**: `make build-desktop-release`
 
 ---
@@ -424,4 +424,4 @@
 
 ---
 
-**完整專案資訊：** [GitHub - mcp-feedback-enhanced](https://github.com/Minidoracat/mcp-feedback-enhanced)
+**完整專案資訊：** [GitHub - mcp-feedback-enhanced-pro](https://github.com/LeonBuild/mcp-feedback-enhanced-pro)

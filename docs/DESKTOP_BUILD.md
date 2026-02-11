@@ -81,10 +81,10 @@ python scripts/build_desktop.py --help
 src/mcp_feedback_enhanced/
 ├── desktop_release/                                   # 發佈用二進制文件
 │   ├── __init__.py
-│   ├── mcp-feedback-enhanced-desktop.exe              # Windows
-│   ├── mcp-feedback-enhanced-desktop-macos-intel     # macOS Intel
-│   ├── mcp-feedback-enhanced-desktop-macos-arm64     # macOS Apple Silicon
-│   └── mcp-feedback-enhanced-desktop-linux           # Linux
+│   ├── mcp-feedback-enhanced-pro-desktop.exe              # Windows
+│   ├── mcp-feedback-enhanced-pro-desktop-macos-intel     # macOS Intel
+│   ├── mcp-feedback-enhanced-pro-desktop-macos-arm64     # macOS Apple Silicon
+│   └── mcp-feedback-enhanced-pro-desktop-linux           # Linux
 ├── desktop_app/                                       # 發佈用 Python 模組
 │   ├── __init__.py
 │   └── desktop_app.py
@@ -100,10 +100,10 @@ src-tauri/python/mcp_feedback_enhanced_desktop/        # 開發環境模組
 
 構建腳本會自動構建以下平台的二進制文件：
 
-- **Windows**: `mcp-feedback-enhanced-desktop.exe`
-- **macOS Intel**: `mcp-feedback-enhanced-desktop-macos-intel`
-- **macOS Apple Silicon**: `mcp-feedback-enhanced-desktop-macos-arm64`
-- **Linux**: `mcp-feedback-enhanced-desktop-linux`
+- **Windows**: `mcp-feedback-enhanced-pro-desktop.exe`
+- **macOS Intel**: `mcp-feedback-enhanced-pro-desktop-macos-intel`
+- **macOS Apple Silicon**: `mcp-feedback-enhanced-pro-desktop-macos-arm64`
+- **Linux**: `mcp-feedback-enhanced-pro-desktop-linux`
 
 桌面應用會根據運行平台自動選擇對應的二進制文件。
 
@@ -121,10 +121,10 @@ make test-desktop
 
 ### Windows
 - 桌面應用程式不會顯示額外的 CMD 視窗
-- 二進制檔案: `mcp-feedback-enhanced-desktop.exe`
+- 二進制檔案: `mcp-feedback-enhanced-pro-desktop.exe`
 
 ### Linux/macOS
-- 二進制檔案: `mcp-feedback-enhanced-desktop`
+- 二進制檔案: `mcp-feedback-enhanced-pro-desktop`
 - 自動設置執行權限
 
 ## 故障排除

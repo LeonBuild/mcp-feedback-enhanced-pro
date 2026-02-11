@@ -200,7 +200,7 @@ class TestPortManager:
         process_info = {
             "pid": 1234,
             "name": "python.exe",
-            "cmdline": "python -m mcp-feedback-enhanced test --web",
+            "cmdline": "python -m mcp-feedback-enhanced-pro test --web",
             "create_time": time.time(),
             "status": "running",
         }

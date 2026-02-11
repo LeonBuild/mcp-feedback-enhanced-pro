@@ -13,6 +13,7 @@
 | [交互流程文檔](./interaction-flows.md) | AI 助手與 MCP 服務的完整交互流程 | 集成開發人員 |
 | [API 參考文檔](./api-reference.md) | MCP 工具接口和 WebSocket API 規範 | API 使用者、前端開發 |
 | [部署指南](./deployment-guide.md) | 環境配置、部署選項和故障排除 | 運維人員、系統管理員 |
+| [FastMCP 3.0 升級報告](./fastmcp-3-upgrade.md) | 升級影響盤點、改動與驗證結果 | 維護人員、發布負責人 |
 
 ### 🏗️ 架構概覽
 

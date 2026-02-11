@@ -19,9 +19,9 @@ try:
     from mcp_feedback_enhanced.debug import server_debug_log as debug_log
     from mcp_feedback_enhanced.web.main import WebUIManager, get_web_ui_manager
 except ImportError as e:
-    # 在這裡無法使用 debug_log，因為導入失敗
-    sys.stderr.write(f"無法導入 MCP Feedback Enhanced 模組: {e}\n")
-    sys.exit(1)
+    # 不要在 import 階段直接退出整個進程，避免 MCP 連線被硬中斷。
+    # 讓上層呼叫者（例如 web.main 的 launch_desktop_app）接住 ImportError 並降級處理。
+    raise ImportError(f"無法導入 MCP Feedback Enhanced 模組: {e}") from e
 
 
 class DesktopApp:

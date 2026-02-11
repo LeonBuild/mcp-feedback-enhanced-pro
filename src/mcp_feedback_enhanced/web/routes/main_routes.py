@@ -7,6 +7,7 @@
 """
 
 import json
+import os
 import time
 from pathlib import Path
 from typing import TYPE_CHECKING
@@ -21,6 +22,222 @@ from ..constants import get_message_code as get_msg_code
 
 if TYPE_CHECKING:
     from ..main import WebUIManager
+
+
+_TOOL_CALL_STATS_CACHE: dict[str, int | str | None] = {
+    "transcript_path": None,
+    "mtime_ns": None,
+    "count": 0,
+}
+
+_TRANSCRIPT_SELECTION_CACHE: dict[str, str | float | None] = {
+    "project_key": None,
+    "selected_path": None,
+    "selected_at": 0.0,
+}
+
+_SELECTION_CACHE_TTL_SECONDS = 5.0
+
+
+def _normalize_project_directory(project_directory: str) -> str:
+    """標準化專案目錄，兼容相對路徑與不同平台路徑。"""
+    raw_value = (project_directory or "").strip()
+    if not raw_value:
+        raw_value = os.getcwd()
+
+    expanded = os.path.expanduser(raw_value)
+    if not os.path.isabs(expanded):
+        expanded = os.path.abspath(expanded)
+
+    return str(Path(expanded))
+
+
+def _build_cursor_project_slug(project_directory: str) -> str:
+    """將專案路徑轉成 Cursor projects 目錄的 slug 名稱。"""
+    normalized = project_directory.replace("\\", "/").strip().strip("/")
+    if normalized in {".", ""}:
+        normalized = _normalize_project_directory(normalized).replace("\\", "/")
+        normalized = normalized.strip().strip("/")
+
+    slug = normalized.replace(":", "").replace("/", "-")
+    return slug.lower()
+
+
+def _get_cursor_projects_roots() -> list[Path]:
+    """收集不同系統/使用者下 Cursor 可能的 projects 根目錄。"""
+    roots: list[Path] = []
+
+    env_paths = [
+        os.getenv("CURSOR_PROJECTS_DIR"),
+        os.getenv("CURSOR_AGENT_PROJECTS_DIR"),
+        os.getenv("MCP_CURSOR_PROJECTS_DIR"),
+    ]
+
+    for env_path in env_paths:
+        if env_path:
+            roots.append(Path(os.path.expanduser(env_path)))
+
+    home_dir = Path.home()
+    roots.extend(
+        [
+            home_dir / ".cursor" / "projects",
+            home_dir / ".cursor-server" / "projects",
+        ]
+    )
+
+    user_profile = os.getenv("USERPROFILE")
+    if user_profile:
+        roots.append(Path(user_profile) / ".cursor" / "projects")
+
+    # 去重並保留存在的路徑
+    unique_roots: list[Path] = []
+    seen: set[str] = set()
+    for root in roots:
+        root_key = str(root.resolve()) if root.exists() else str(root)
+        if root_key in seen:
+            continue
+        seen.add(root_key)
+        if root.exists():
+            unique_roots.append(root)
+
+    return unique_roots
+
+
+def _safe_mtime(path: Path) -> float:
+    """安全取得檔案修改時間。"""
+    try:
+        return path.stat().st_mtime
+    except OSError:
+        return -1.0
+
+
+def _iter_transcript_dirs(projects_root: Path) -> list[Path]:
+    """列舉 projects 根目錄下的 transcript 目錄。"""
+    transcript_dirs: list[Path] = []
+    try:
+        for child in projects_root.iterdir():
+            if not child.is_dir():
+                continue
+            transcript_dir = child / "agent-transcripts"
+            if transcript_dir.exists():
+                transcript_dirs.append(transcript_dir)
+    except OSError:
+        return []
+    return transcript_dirs
+
+
+def _get_latest_transcript_file(transcript_dir: Path) -> Path | None:
+    """取得最新的 chat transcript 檔案。"""
+    latest_file: Path | None = None
+    latest_mtime = -1.0
+
+    for transcript_file in transcript_dir.glob("*.txt"):
+        try:
+            file_mtime = transcript_file.stat().st_mtime
+        except OSError:
+            continue
+
+        if file_mtime > latest_mtime:
+            latest_mtime = file_mtime
+            latest_file = transcript_file
+
+    return latest_file
+
+
+def _select_best_transcript_file(project_directory: str) -> Path | None:
+    """選出最可能對應當前 chat 的 transcript 檔案。"""
+    global _TRANSCRIPT_SELECTION_CACHE
+
+    normalized_project_dir = _normalize_project_directory(project_directory)
+    cache_project_key = str(_TRANSCRIPT_SELECTION_CACHE.get("project_key") or "")
+    cache_selected_path = str(_TRANSCRIPT_SELECTION_CACHE.get("selected_path") or "")
+    cache_selected_at = float(_TRANSCRIPT_SELECTION_CACHE.get("selected_at") or 0.0)
+
+    if (
+        cache_project_key == normalized_project_dir
+        and cache_selected_path
+        and time.time() - cache_selected_at <= _SELECTION_CACHE_TTL_SECONDS
+    ):
+        cached_file = Path(cache_selected_path)
+        if cached_file.exists():
+            return cached_file
+
+    slug_candidates = {
+        _build_cursor_project_slug(normalized_project_dir),
+        _build_cursor_project_slug(_normalize_project_directory(os.getcwd())),
+    }
+    slug_candidates = {slug for slug in slug_candidates if slug}
+
+    matched_candidates: dict[str, Path] = {}
+    fallback_candidates: dict[str, Path] = {}
+
+    for projects_root in _get_cursor_projects_roots():
+        # 1) 直接 slug 命中（最優先）
+        for slug in slug_candidates:
+            direct_dir = projects_root / slug / "agent-transcripts"
+            if direct_dir.exists():
+                latest_file = _get_latest_transcript_file(direct_dir)
+                if latest_file:
+                    matched_candidates[str(latest_file)] = latest_file
+
+        # 2) 掃描整個 projects 目錄（跨平台/多使用者 fallback）
+        for transcript_dir in _iter_transcript_dirs(projects_root):
+            latest_file = _get_latest_transcript_file(transcript_dir)
+            if not latest_file:
+                continue
+
+            parent_name = transcript_dir.parent.name.lower()
+            if slug_candidates and any(
+                parent_name == slug
+                or parent_name.endswith(slug)
+                or slug in parent_name
+                for slug in slug_candidates
+            ):
+                matched_candidates[str(latest_file)] = latest_file
+            else:
+                fallback_candidates[str(latest_file)] = latest_file
+
+    selected_file: Path | None = None
+    if matched_candidates:
+        selected_file = max(matched_candidates.values(), key=_safe_mtime)
+    elif fallback_candidates:
+        selected_file = max(fallback_candidates.values(), key=_safe_mtime)
+
+    _TRANSCRIPT_SELECTION_CACHE = {
+        "project_key": normalized_project_dir,
+        "selected_path": str(selected_file) if selected_file else None,
+        "selected_at": time.time(),
+    }
+
+    return selected_file
+
+
+def _count_tool_calls_in_transcript(transcript_file: Path) -> int:
+    """統計 transcript 內 [Tool call] 的次數（帶快取）。"""
+    global _TOOL_CALL_STATS_CACHE
+
+    file_stat = transcript_file.stat()
+    transcript_path = str(transcript_file)
+    mtime_ns = file_stat.st_mtime_ns
+
+    if (
+        _TOOL_CALL_STATS_CACHE.get("transcript_path") == transcript_path
+        and _TOOL_CALL_STATS_CACHE.get("mtime_ns") == mtime_ns
+    ):
+        return int(_TOOL_CALL_STATS_CACHE.get("count") or 0)
+
+    tool_call_count = 0
+    with open(transcript_file, encoding="utf-8", errors="ignore") as f:
+        for line in f:
+            if "[Tool call]" in line:
+                tool_call_count += 1
+
+    _TOOL_CALL_STATS_CACHE = {
+        "transcript_path": transcript_path,
+        "mtime_ns": mtime_ns,
+        "count": tool_call_count,
+    }
+    return tool_call_count
 
 
 def load_user_layout_settings() -> str:
@@ -176,6 +393,48 @@ def setup_routes(manager: "WebUIManager"):
                 "images_count": len(current_session.images),
             }
         )
+
+    @manager.app.get("/api/tool-call-stats")
+    async def get_tool_call_stats(request: Request):
+        """取得目前 chat 的 tools call 已用統計。"""
+        try:
+            current_session = manager.get_current_session()
+            project_directory = (
+                current_session.project_directory if current_session else os.getcwd()
+            )
+
+            transcript_file = _select_best_transcript_file(project_directory)
+            if not transcript_file:
+                return JSONResponse(
+                    content={
+                        "available": False,
+                        "tool_call_count": 0,
+                        "scope": "current_chat_latest_transcript",
+                    }
+                )
+
+            tool_call_count = _count_tool_calls_in_transcript(transcript_file)
+            return JSONResponse(
+                content={
+                    "available": True,
+                    "tool_call_count": tool_call_count,
+                    "scope": "current_chat_latest_transcript",
+                    "transcript_file": transcript_file.name,
+                    "transcript_dir": str(transcript_file.parent),
+                }
+            )
+
+        except Exception as e:
+            debug_log(f"取得 tools call 統計失敗: {e}")
+            return JSONResponse(
+                status_code=500,
+                content={
+                    "available": False,
+                    "tool_call_count": 0,
+                    "scope": "current_chat_latest_transcript",
+                    "error": f"get_tool_call_stats_failed: {e!s}",
+                },
+            )
 
     @manager.app.get("/api/all-sessions")
     async def get_all_sessions(request: Request):

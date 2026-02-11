@@ -149,6 +149,29 @@
   margin-left: auto;
 }
 
+.tool-call-stats-compact {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+  font-size: 11px;
+}
+
+.tool-call-stats-compact .tool-call-label {
+  opacity: 0.9;
+}
+
+.tool-call-stats-compact .tool-call-value {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-weight: 600;
+  color: var(--status-connected);
+}
+
+.tool-call-stats-compact.unavailable .tool-call-value {
+  color: var(--text-secondary);
+  opacity: 0.7;
+}
+
 .connection-status-compact .status-dot {
   width: 6px;
   height: 6px;
@@ -813,6 +836,11 @@
 @media (max-width: 480px) {
   /* 隱藏會話 ID */
   .session-info-compact {
+    display: none;
+  }
+
+  /* 保留統計但縮短標籤文字 */
+  .tool-call-stats-compact .tool-call-label {
     display: none;
   }
   

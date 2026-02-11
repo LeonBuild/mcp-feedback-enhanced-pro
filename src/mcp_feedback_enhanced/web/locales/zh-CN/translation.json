@@ -354,6 +354,8 @@
         "messageCount": "消息",
         "sessionCount": "会话",
         "statusText": "状态",
+        "toolCallsUsed": "Tools",
+        "toolCallsTooltip": "当前 chat 已用 tools call 统计",
         "waiting": "等待中",
         "times": "次",
         "quality": {

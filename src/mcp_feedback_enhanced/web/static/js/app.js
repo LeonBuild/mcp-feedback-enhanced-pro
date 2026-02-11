@@ -53,6 +53,10 @@
         this.isInitialized = false;
         this.pendingSubmission = null;
 
+        // Tools call 統計（目前 chat）
+        this.toolCallStatsTimer = null;
+        this.toolCallCount = 0;
+
         // 初始化防抖函數
         this.initDebounceHandlers();
 
@@ -280,7 +284,10 @@
                             self.webSocketManager.updateSessionTimeoutSettings(timeoutSettings);
                         }
 
-                        // 18. 建立 WebSocket 連接
+                        // 18. 啟動 tools call 統計輪詢
+                        self.initializeToolCallStats();
+
+                        // 19. 建立 WebSocket 連接
                         self.webSocketManager.connect();
 
                         resolve();
@@ -1730,6 +1737,76 @@
     };
 
     /**
+     * 初始化 tools call 統計（目前 chat）
+     */
+    FeedbackApp.prototype.initializeToolCallStats = function() {
+        const countElement = window.MCPFeedback.Utils.safeQuerySelector('#toolCallCountValue');
+        if (!countElement) {
+            return;
+        }
+
+        // 先立即拉一次，避免首次顯示延遲
+        this.fetchToolCallStats();
+
+        // 避免重複建立輪詢
+        if (this.toolCallStatsTimer) {
+            clearInterval(this.toolCallStatsTimer);
+            this.toolCallStatsTimer = null;
+        }
+
+        const self = this;
+        this.toolCallStatsTimer = setInterval(function() {
+            self.fetchToolCallStats();
+        }, 2000);
+    };
+
+    /**
+     * 取得 tools call 統計
+     */
+    FeedbackApp.prototype.fetchToolCallStats = function() {
+        const self = this;
+
+        fetch('/api/tool-call-stats')
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('API 請求失敗: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(statsData) {
+                const count = Number(statsData.tool_call_count);
+                const normalizedCount = Number.isFinite(count) ? count : 0;
+                const isAvailable = statsData.available !== false;
+                self.updateToolCallStats(normalizedCount, isAvailable);
+            })
+            .catch(function(error) {
+                console.warn('⚠️ 取得 tools call 統計失敗:', error);
+                self.updateToolCallStats(self.toolCallCount || 0, false);
+            });
+    };
+
+    /**
+     * 更新 tools call 統計顯示
+     */
+    FeedbackApp.prototype.updateToolCallStats = function(count, isAvailable) {
+        this.toolCallCount = count;
+
+        const countElement = window.MCPFeedback.Utils.safeQuerySelector('#toolCallCountValue');
+        if (countElement) {
+            countElement.textContent = String(count);
+        }
+
+        const statsElement = window.MCPFeedback.Utils.safeQuerySelector('#toolCallStatsCompact');
+        if (statsElement) {
+            if (isAvailable) {
+                statsElement.classList.remove('unavailable');
+            } else {
+                statsElement.classList.add('unavailable');
+            }
+        }
+    };
+
+    /**
      * 初始化自動提交管理器
      */
     FeedbackApp.prototype.initializeAutoSubmitManager = function() {
@@ -2200,6 +2277,11 @@
 
         if (this.textareaHeightManager) {
             this.textareaHeightManager.destroy();
+        }
+
+        if (this.toolCallStatsTimer) {
+            clearInterval(this.toolCallStatsTimer);
+            this.toolCallStatsTimer = null;
         }
 
         console.log('✅ 應用程式資源清理完成');

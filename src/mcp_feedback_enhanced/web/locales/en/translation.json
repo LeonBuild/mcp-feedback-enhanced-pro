@@ -353,6 +353,8 @@
         "messageCount": "Messages",
         "sessionCount": "Sessions",
         "statusText": "Status",
+        "toolCallsUsed": "Tools",
+        "toolCallsTooltip": "Current chat tools call usage",
         "waiting": "Waiting",
         "times": "times",
         "quality": {

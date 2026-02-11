@@ -2,6 +2,34 @@
 
 This document records all version updates for **MCP Feedback Enhanced**.
 
+## [v3.0.0] - 2026-02-11 - FastMCP 3 Upgrade, Unified Package Naming, and Release Pipeline Refresh
+
+### 🌟 Version Highlights
+This major release unifies the project identity around `mcp-feedback-enhanced-pro`, upgrades the runtime baseline to FastMCP 3.x, hardens timeout/session retention behavior, and modernizes publishing for direct `uvx` usage.
+
+### 💥 Breaking Changes
+- **Package identity finalized**: distribution and CLI naming are now centered on `mcp-feedback-enhanced-pro`
+- **FastMCP baseline updated**: minimum runtime moved to FastMCP 3.x (`fastmcp>=3.0.0b2`)
+
+### ✨ New Features
+- **Session retention default changed to permanent**: session history retention now defaults to `0` (no expiry cleanup)
+- **Manual single-session deletion**: added per-session deletion workflow in Web UI session management
+
+### 🚀 Improvements
+- **Timeout hardening**: strengthened timeout handling and clamping behavior for safer edge-case handling
+- **30-day default timeout**: unified timeout defaults to `2592000` seconds across backend/frontend/docs/examples
+- **Repository and metadata refresh**: updated project links and maintainer metadata to LeonBuild
+
+### 🐛 Bug Fixes
+- Fixed temp-file cleanup edge case where `cleanup_temp_files(max_age=0)` could miss newly-created files under tight timing
+
+### 🛠️ Release & Tooling
+- **Acknowledgements**: Thanks to Minidoracat and the upstream project `Minidoracat/mcp-feedback-enhanced` for the original architecture and long-term maintenance.
+- Updated release workflow to `uv build --no-sources` + `uv publish`
+- Added Trusted Publishing-compatible flow with token fallback
+
+---
+
 ## [v2.6.0] - 2025-06-28 - Intelligent Session Management & Automation Enhancement
 
 ### 🌟 Version Highlights

@@ -4,6 +4,7 @@
 
 **Original Author:** [Fábio Ferreira](https://x.com/fabiomlferreira) | [Original Project](https://github.com/noopstudios/interactive-feedback-mcp) ⭐
 **Enhanced Fork:** [Minidoracat](https://github.com/Minidoracat)
+**Acknowledgement:** Thanks to [Minidoracat](https://github.com/Minidoracat) and the original project [Minidoracat/mcp-feedback-enhanced](https://github.com/Minidoracat/mcp-feedback-enhanced) for the foundation and continuous community contributions.
 **UI Design Reference:** [sanshao85/mcp-feedback-collector](https://github.com/sanshao85/mcp-feedback-collector)
 
 ## 🎯 Core Concept
@@ -39,7 +40,7 @@ This is an [MCP server](https://modelcontextprotocol.io/) that establishes **fee
 ### 📝 Smart Workflow
 - **Prompt Management**: CRUD operations for common prompts, usage statistics, intelligent sorting
 - **Auto-Timed Submit**: 1-86400 second flexible timer, supports pause, resume, cancel with new pause/resume button controls
-- **Auto Command Execution** (v2.6.0): Automatically execute preset commands after creating new sessions or commits for improved development efficiency
+- **Auto Command Execution** (v3.0.0): Automatically execute preset commands after creating new sessions or commits for improved development efficiency
 - **Session Management & Tracking**: Local file storage, privacy controls, history export (supports JSON, CSV, Markdown formats), real-time statistics, flexible timeout settings
 - **Connection Monitoring**: WebSocket status monitoring, auto-reconnection, quality indicators
 - **AI Work Summary Markdown Display**: Support for rich Markdown syntax rendering including headers, bold text, code blocks, lists, links and other formats for enhanced content readability
@@ -47,7 +48,7 @@ This is an [MCP server](https://modelcontextprotocol.io/) that establishes **fee
 ### 🎨 Modern Experience
 - **Responsive Design**: Adapts to different screen sizes, modular JavaScript architecture
 - **Audio Notifications**: Built-in multiple sound effects, custom audio upload support, volume control
-- **System Notifications** (v2.6.0): System-level real-time alerts for important events (like auto-commit, session timeout)
+- **System Notifications** (v3.0.0): System-level real-time alerts for important events (like auto-commit, session timeout)
 - **Smart Memory**: Input box height memory, one-click copy, persistent settings
 - **Multi-language Support**: Traditional Chinese, English, Simplified Chinese, instant switching
 
@@ -255,14 +256,13 @@ make quick-check                                        # Quick check and auto-f
 
 📋 **Complete Version History:** [RELEASE_NOTES/CHANGELOG.en.md](RELEASE_NOTES/CHANGELOG.en.md)
 
-### Latest Version Highlights (v2.6.0)
-- 🚀 **Auto Command Execution**: Automatically execute preset commands after creating new sessions or commits, improving workflow efficiency
-- 📊 **Session Export Feature**: Support exporting session records to multiple formats for easy sharing and archiving
-- ⏸️ **Auto-commit Control**: Added pause and resume buttons for better control over auto-commit timing
-- 🔔 **System Notifications**: System-level notifications for important events with real-time alerts
-- ⏱️ **Session Timeout Optimization**: Redesigned session management with more flexible configuration options
-- 🌏 **I18n Enhancement**: Refactored internationalization architecture with full multilingual support for notifications
-- 🎨 **UI Simplification**: Significantly simplified user interface for improved user experience
+### Latest Version Highlights (v3.0.0)
+- 📦 **Package & Command Rename**: Unified package and CLI entrypoint to `mcp-feedback-enhanced-pro`, enabling direct usage with `uvx mcp-feedback-enhanced-pro@latest`
+- ⚙️ **FastMCP 3 Upgrade**: Upgraded runtime baseline to FastMCP 3.x (`fastmcp>=3.0.0b2`) and completed compatibility verification
+- ⏳ **Timeout Hardening + 30-Day Default**: Added safer timeout handling and unified default timeout to 30 days (`2592000` seconds)
+- 🗂️ **Session History Retention Enhancements**: Default retention is now permanent (`0`) with support for manual single-session deletion
+- 🧭 **Project Ownership & Publishing Updates**: Updated repository/author metadata to LeonBuild and aligned release pipeline with `uv build --no-sources` + `uv publish`
+- 🧹 **About Page Cleanup**: Removed the Discord support section and kept GitHub as the primary support channel
 
 ## 🐛 Common Issues
 

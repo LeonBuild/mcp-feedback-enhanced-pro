@@ -4,6 +4,7 @@
 
 **原作者：** [Fábio Ferreira](https://x.com/fabiomlferreira) | [原始專案](https://github.com/noopstudios/interactive-feedback-mcp) ⭐
 **分支版本：** [Minidoracat](https://github.com/Minidoracat)
+**致謝：** 感謝 [Minidoracat](https://github.com/Minidoracat) 與原始專案 [Minidoracat/mcp-feedback-enhanced](https://github.com/Minidoracat/mcp-feedback-enhanced) 為本專案提供基礎與持續的社群貢獻。
 **UI 設計參考：** [sanshao85/mcp-feedback-collector](https://github.com/sanshao85/mcp-feedback-collector)
 
 ## 🎯 核心概念
@@ -39,7 +40,7 @@
 ### 📝 智能工作流程
 - **提示詞管理**：常用提示詞的 CRUD 操作、使用統計、智能排序
 - **自動定時提交**：1-86400 秒彈性計時器，支援暫停、恢復、取消，新增暫停/開始按鈕控制
-- **自動執行命令**（v2.6.0）：新建會話和提交後可自動執行預設命令，提升開發效率
+- **自動執行命令**（v3.0.0）：新建會話和提交後可自動執行預設命令，提升開發效率
 - **會話管理追蹤**：本地檔案存儲、隱私控制、歷史匯出（支援 JSON、CSV、Markdown 格式）、即時統計、彈性超時設定
 - **連線監控**：WebSocket 狀態監控、自動重連、品質指示
 - **AI 工作摘要 Markdown 顯示**：支援豐富的 Markdown 語法渲染，包含標題、粗體、程式碼區塊、列表、連結等格式，提升內容可讀性
@@ -47,7 +48,7 @@
 ### 🎨 現代化體驗
 - **響應式設計**：適配不同螢幕尺寸，模組化 JavaScript 架構
 - **音效通知**：內建多種音效、支援自訂音效上傳、音量控制
-- **系統通知**（v2.6.0）：重要事件（如自動提交、會話超時等）的系統級即時提醒
+- **系統通知**（v3.0.0）：重要事件（如自動提交、會話超時等）的系統級即時提醒
 - **智能記憶**：輸入框高度記憶、一鍵複製、設定持久化
 - **多語言支援**：繁體中文、英文、簡體中文，即時切換
 
@@ -256,14 +257,13 @@ make quick-check                                        # 快速檢查並自動�
 
 📋 **完整版本更新記錄：** [RELEASE_NOTES/CHANGELOG.zh-TW.md](RELEASE_NOTES/CHANGELOG.zh-TW.md)
 
-### 最新版本亮點（v2.6.0）
-- 🚀 **自動執行命令**: 新建會話和提交後可自動執行預設命令，提升工作效率
-- 📊 **會話匯出功能**: 支援將會話記錄匯出為多種格式，方便分享和存檔
-- ⏸️ **自動提交控制**: 新增暫停和開始按鈕，讓使用者更好控制自動提交時機
-- 🔔 **系統通知**: 新增系統級通知功能，重要事件即時提醒
-- ⏱️ **會話超時機制優化**: 重新設計會話管理，提供更彈性的設定選項
-- 🌏 **多語系強化**: 重構多語系架構，通知系統也完整支援多語言
-- 🎨 **介面簡化**: 大幅簡化使用者介面，提升使用體驗
+### 最新版本亮點（v3.0.0）
+- 📦 **套件名稱與命令統一**：統一為 `mcp-feedback-enhanced-pro`，可直接使用 `uvx mcp-feedback-enhanced-pro@latest`
+- ⚙️ **FastMCP 3 升級**：執行基線升級到 FastMCP 3.x（`fastmcp>=3.0.0b2`），並完成相容性驗證
+- ⏳ **超時加固與 30 天預設值**：強化超時處理邏輯，並將預設超時統一為 30 天（`2592000` 秒）
+- 🗂️ **會話歷史保留增強**：預設改為永久保留（`0`），並支援手動刪除單筆會話歷史
+- 🧭 **專案歸屬與發佈流程更新**：倉庫/作者資訊更新為 LeonBuild，發佈流程統一為 `uv build --no-sources` + `uv publish`
+- 🧹 **About 頁面清理**：移除 Discord 支援區塊，保留 GitHub 作為主要支援管道
 
 ## 🐛 常見問題
 

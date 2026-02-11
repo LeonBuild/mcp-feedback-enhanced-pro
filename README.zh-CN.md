@@ -4,6 +4,7 @@
 
 **原作者：** [Fábio Ferreira](https://x.com/fabiomlferreira) | [原始项目](https://github.com/noopstudios/interactive-feedback-mcp) ⭐
 **分支版本：** [Minidoracat](https://github.com/Minidoracat)
+**致谢：** 感谢 [Minidoracat](https://github.com/Minidoracat) 及原项目 [Minidoracat/mcp-feedback-enhanced](https://github.com/Minidoracat/mcp-feedback-enhanced) 为本项目提供基础与持续的社区贡献。
 **UI 设计参考：** [sanshao85/mcp-feedback-collector](https://github.com/sanshao85/mcp-feedback-collector)
 
 ## 🎯 核心概念
@@ -39,7 +40,7 @@
 ### 📝 智能工作流程
 - **提示词管理**：常用提示词的 CRUD 操作、使用统计、智能排序
 - **自动定时提交**：1-86400 秒弹性计时器，支持暂停、恢复、取消，新增暂停/开始按钮控制
-- **自动执行命令**（v2.6.0）：新建会话和提交后可自动执行预设命令，提升开发效率
+- **自动执行命令**（v3.0.0）：新建会话和提交后可自动执行预设命令，提升开发效率
 - **会话管理追踪**：本地文件存储、隐私控制、历史导出（支持 JSON、CSV、Markdown 格式）、即时统计、弹性超时设定
 - **连接监控**：WebSocket 状态监控、自动重连、品质指示
 - **AI 工作摘要 Markdown 显示**：支持丰富的 Markdown 语法渲染，包含标题、粗体、代码区块、列表、链接等格式，提升内容可读性
@@ -47,7 +48,7 @@
 ### 🎨 现代化体验
 - **响应式设计**：适配不同屏幕尺寸，模块化 JavaScript 架构
 - **音效通知**：内建多种音效、支持自定义音效上传、音量控制
-- **系统通知**（v2.6.0）：重要事件（如自动提交、会话超时等）的系统级即时提醒
+- **系统通知**（v3.0.0）：重要事件（如自动提交、会话超时等）的系统级即时提醒
 - **智能记忆**：输入框高度记忆、一键复制、设置持久化
 - **多语言支持**：简体中文、英文、繁体中文，即时切换
 
@@ -255,14 +256,13 @@ make quick-check                                        # 快速检查并自动�
 
 📋 **完整版本更新记录：** [RELEASE_NOTES/CHANGELOG.zh-CN.md](RELEASE_NOTES/CHANGELOG.zh-CN.md)
 
-### 最新版本亮点（v2.6.0）
-- 🚀 **自动执行命令**: 新建会话和提交后可自动执行预设命令，提升工作效率
-- 📊 **会话导出功能**: 支持将会话记录导出为多种格式，方便分享和存档
-- ⏸️ **自动提交控制**: 新增暂停和开始按钮，让用户更好控制自动提交时机
-- 🔔 **系统通知**: 新增系统级通知功能，重要事件即时提醒
-- ⏱️ **会话超时机制优化**: 重新设计会话管理，提供更弹性的设置选项
-- 🌏 **多语系强化**: 重构多语系架构，通知系统也完整支持多语言
-- 🎨 **界面简化**: 大幅简化用户界面，提升使用体验
+### 最新版本亮点（v3.0.0）
+- 📦 **包名与命令统一**：统一为 `mcp-feedback-enhanced-pro`，可直接使用 `uvx mcp-feedback-enhanced-pro@latest`
+- ⚙️ **FastMCP 3 升级**：运行时基线升级到 FastMCP 3.x（`fastmcp>=3.0.0b2`），并完成兼容性验证
+- ⏳ **超时加固与 30 天默认值**：强化超时处理逻辑，并将默认超时统一为 30 天（`2592000` 秒）
+- 🗂️ **会话历史保留增强**：默认改为永久保留（`0`），并支持手动删除单条会话历史
+- 🧭 **项目归属与发布流程更新**：仓库/作者信息更新为 LeonBuild，发布流程统一为 `uv build --no-sources` + `uv publish`
+- 🧹 **About 页面清理**：移除 Discord 支持区块，保留 GitHub 作为主要支持渠道
 
 ## 🐛 常见问题
 

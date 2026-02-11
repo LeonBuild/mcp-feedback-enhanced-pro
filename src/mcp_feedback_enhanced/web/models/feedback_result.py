@@ -12,5 +12,5 @@ class FeedbackResult(TypedDict):
     """回饋結果的型別定義"""
 
     command_logs: str
-    interactive_feedback: str
+    get_feedback: str
     images: list[dict]

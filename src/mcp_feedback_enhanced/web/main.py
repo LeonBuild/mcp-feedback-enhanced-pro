@@ -1110,7 +1110,7 @@ async def launch_web_feedback_ui(
         timeout: 超時時間（秒）
 
     Returns:
-        dict: 回饋結果，包含 logs、interactive_feedback 和 images
+        dict: 回饋結果，包含 logs、get_feedback 和 images
     """
     manager = get_web_ui_manager()
 
@@ -1225,7 +1225,7 @@ element.innerHTML = renderedContent;
 
             debug_log("收到回饋結果:")
             debug_log(f"命令日誌: {result.get('logs', '')}")
-            debug_log(f"互動回饋: {result.get('interactive_feedback', '')}")
+            debug_log(f"互動回饋: {result.get('get_feedback', '')}")
             debug_log(f"圖片數量: {len(result.get('images', []))}")
 
         except KeyboardInterrupt:

@@ -6,13 +6,13 @@
 
 MCP Feedback Enhanced 基於 FastMCP 框架實現，提供標準的 MCP 協議支援。
 
-### interactive_feedback
+### get_feedback
 
 AI 助手與用戶進行交互式回饋的核心 MCP 工具。
 
 #### 函數簽名
 ```python
-async def interactive_feedback(
+async def get_feedback(
     project_directory: str,
     summary: str,
     timeout: int = 2592000
@@ -31,7 +31,7 @@ async def interactive_feedback(
 ```python
 {
     "command_logs": "",  # 命令執行日誌（保留字段）
-    "interactive_feedback": str,  # 用戶回饋內容
+    "get_feedback": str,  # 用戶回饋內容
     "images": List[str]  # 用戶上傳的圖片（Base64 編碼）
 }
 ```
@@ -39,13 +39,13 @@ async def interactive_feedback(
 #### 使用示例
 ```python
 # 基本調用
-result = await interactive_feedback(
+result = await get_feedback(
     project_directory="./my-web-app",
     summary="我已完成登入功能的實現，包括表單驗證和錯誤處理。請檢查代碼品質。"
 )
 
 # 自定義超時
-result = await interactive_feedback(
+result = await get_feedback(
     project_directory="./complex-project",
     summary="重構完成，請詳細測試所有功能模組。",
     timeout=1200  # 20分鐘
@@ -55,7 +55,7 @@ result = await interactive_feedback(
 #### 錯誤處理
 ```python
 try:
-    result = await interactive_feedback(...)
+    result = await get_feedback(...)
 except TimeoutError:
     print("用戶回饋超時")
 except ValidationError as e:

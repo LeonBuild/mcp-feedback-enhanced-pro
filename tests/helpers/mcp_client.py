@@ -87,10 +87,10 @@ class SimpleMCPClient:
 
         return False
 
-    async def call_interactive_feedback(
+    async def call_get_feedback(
         self, project_directory: str, summary: str, timeout: int = 30
     ) -> dict[str, Any]:
-        """調用 interactive_feedback 工具"""
+        """調用 get_feedback 工具"""
         if not self.initialized:
             return {"error": "MCP 客戶端未初始化"}
 
@@ -100,11 +100,10 @@ class SimpleMCPClient:
                 "id": 2,
                 "method": "tools/call",
                 "params": {
-                    "name": "interactive_feedback",
+                    "name": "get_feedback",
                     "arguments": {
                         "project_directory": project_directory,
                         "summary": summary,
-                        "timeout": timeout,
                     },
                 },
             }
@@ -222,18 +221,18 @@ class MCPWorkflowTester:
                     result["errors"].append("初始化失敗")
                     return result
 
-                # 3. 調用 interactive_feedback
-                feedback_result = await self.client.call_interactive_feedback(
+                # 3. 調用 get_feedback
+                feedback_result = await self.client.call_get_feedback(
                     project_dir, summary, timeout=10
                 )
 
                 if "error" not in feedback_result:
-                    result["steps"]["interactive_feedback_called"] = True
+                    result["steps"]["get_feedback_called"] = True
                     result["feedback_result"] = feedback_result
                     result["success"] = True
                 else:
                     result["errors"].append(
-                        f"interactive_feedback 調用失敗: {feedback_result['error']}"
+                        f"get_feedback 調用失敗: {feedback_result['error']}"
                     )
 
             except Exception as e:

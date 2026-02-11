@@ -10,7 +10,7 @@
         "MCP_WEB_PORT": "8765",
         "MCP_DEBUG": "false"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }

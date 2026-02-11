@@ -243,7 +243,7 @@ class TestWebUIUtilities:
         # 測試有效回應
         valid_response = {
             "command_logs": "test logs",
-            "interactive_feedback": "test feedback",
+            "get_feedback": "test feedback",
             "images": [],
         }
         assert TestUtils.validate_web_response(valid_response) == True

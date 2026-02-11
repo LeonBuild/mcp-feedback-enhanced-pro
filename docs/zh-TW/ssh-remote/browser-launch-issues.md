@@ -27,7 +27,7 @@ MCP Feedback Enhanced 預設使用端口 **8765**，您也可以自定義端口�
 
 **重要**：不要手動啟動 Web UI，而是要等待 AI 模型呼叫 MCP 工具時自動啟動。
 
-當 AI 模型呼叫 `interactive_feedback` 工具時，系統會自動啟動 Web UI。
+當 AI 模型呼叫 `get_feedback` 工具時，系統會自動啟動 Web UI。
 
 ### 步驟三：查看端口並連接
 

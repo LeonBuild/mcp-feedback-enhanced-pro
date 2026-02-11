@@ -27,7 +27,7 @@ sequenceDiagram
     participant User as 用戶
 
     Note over AI,User: 🚀 第一次調用流程
-    AI->>+MCP: interactive_feedback(project_dir, summary, timeout)
+    AI->>+MCP: get_feedback(project_dir, summary, timeout)
     MCP->>+WM: launch_web_feedback_ui()
 
     Note over WM: 環境檢測與會話創建
@@ -60,7 +60,7 @@ sequenceDiagram
     MCP-->>-AI: 返回回饋結果
 
     Note over AI,User: 🔄 第二次調用流程 (持久化會話)
-    AI->>+MCP: interactive_feedback(new_summary, timeout)
+    AI->>+MCP: get_feedback(new_summary, timeout)
     MCP->>+WM: 檢查現有會話
 
     alt 有活躍會話
@@ -96,7 +96,7 @@ sequenceDiagram
 **MCP 工具調用格式**：
 ```python
 # AI 助手通過 MCP 協議調用
-result = await interactive_feedback(
+result = await get_feedback(
     project_directory="./my-project",
     summary="我已完成了功能 X 的實現，請檢查代碼品質和邏輯正確性。主要變更包括：\n1. 新增錯誤處理機制\n2. 優化性能瓶頸\n3. 增加單元測試覆蓋率",
     timeout=600  # 10 分鐘超時
@@ -112,7 +112,7 @@ result = await interactive_feedback(
 
 ```mermaid
 flowchart TD
-    START[AI 調用 interactive_feedback] --> VALIDATE[參數驗證與類型檢查]
+    START[AI 調用 get_feedback] --> VALIDATE[參數驗證與類型檢查]
     VALIDATE --> ENV[環境檢測<br/>Local/SSH/WSL]
     ENV --> MANAGER[獲取 WebUIManager<br/>單例實例]
     MANAGER --> CHECK[檢查現有會話]
@@ -428,7 +428,7 @@ stateDiagram-v2
 #### 1. AI 助手再次調用
 ```python
 # AI 根據用戶回饋進行調整後再次調用
-result = await interactive_feedback(
+result = await get_feedback(
     project_directory="./my-project",
     summary="根據您的建議，我已修改了錯誤處理邏輯，請再次確認",
     timeout=600
@@ -565,7 +565,7 @@ sequenceDiagram
     participant UI as 前端界面
 
     Note over AI,UI: 📊 會話生命週期管理（v2.4.3 重構）
-    AI->>Server: interactive_feedback()
+    AI->>Server: get_feedback()
     Server->>SM: createSession()
     SM->>SDM: addCurrentSession()
     SDM->>SUR: renderCurrentSession()

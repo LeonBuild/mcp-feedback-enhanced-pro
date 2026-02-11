@@ -9,7 +9,7 @@ This patch restores desktop auto-close behavior after feedback submission and ti
 
 ### ✨ Improvements
 - Restored desktop-mode behavior to close the desktop window immediately after feedback is submitted
-- Updated `interactive_feedback` tool usage rules to enforce repeated follow-up calls in all stages
+- Updated `get_feedback` tool usage rules to enforce repeated follow-up calls in all stages
 - Aligned submitted-waiting i18n texts with restored desktop auto-close behavior
 
 ---
@@ -20,7 +20,7 @@ This patch restores desktop auto-close behavior after feedback submission and ti
 Patch release focused on eliminating timeout-triggered interruptions in interactive feedback flows.
 
 ### ✨ Improvements
-- Removed `timeout` from `interactive_feedback` tool arguments; callers can no longer pass tiny values
+- Removed `timeout` from `get_feedback` tool arguments; callers can no longer pass tiny values
 - Forced server-side interactive feedback timeout to a fixed 30-day value (`2592000` seconds)
 - Preserved existing feedback workflow behavior while preventing accidental immediate timeout
 

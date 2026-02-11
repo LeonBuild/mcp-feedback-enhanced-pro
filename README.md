@@ -106,7 +106,7 @@ pip install uv
       "command": "uvx",
       "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }
@@ -126,7 +126,7 @@ pip install uv
         "MCP_WEB_PORT": "8765",
         "MCP_LANGUAGE": "en"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }
@@ -146,7 +146,7 @@ pip install uv
         "MCP_WEB_PORT": "8765",
         "MCP_DEBUG": "false"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }
@@ -160,7 +160,7 @@ pip install uv
 For optimal results, add the following rules to your AI assistant:
 
 ```
-MUST FOLLOW - READ AND OBEY TOOL DOCSTRING: mcp-feedback-enhanced-pro / interactive_feedback
+MUST FOLLOW - READ AND OBEY TOOL DOCSTRING: mcp-feedback-enhanced-pro / get_feedback
 
 USAGE RULES (MUST FOLLOW):
 1. REQUIRED EACH TURN: You MUST call this tool on EVERY assistant turn, including
@@ -301,7 +301,7 @@ Set `"MCP_WEB_HOST": "0.0.0.0"` in MCP configuration to allow remote access:
         "MCP_WEB_HOST": "0.0.0.0",
         "MCP_WEB_PORT": "8765"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }
@@ -340,7 +340,7 @@ A: v2.5.0 introduces cross-platform desktop application support. Set `"MCP_DESKT
         "MCP_DESKTOP_MODE": "true",
         "MCP_WEB_PORT": "8765"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }

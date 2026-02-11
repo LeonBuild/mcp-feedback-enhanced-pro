@@ -47,7 +47,7 @@ graph TB
     subgraph "MCP Feedback Enhanced - 四層架構"
         subgraph "第一層：MCP 服務層"
             SERVER[server.py<br/>MCP 服務器]
-            TOOL[interactive_feedback<br/>核心工具]
+            TOOL[get_feedback<br/>核心工具]
             I18N[i18n.py<br/>國際化支援]
             DEBUG[debug.py<br/>統一調試]
         end
@@ -153,7 +153,7 @@ graph TB
 
 **第一層 - MCP 服務層**：
 - 實現 MCP 協議標準
-- 提供 `interactive_feedback` 核心工具
+- 提供 `get_feedback` 核心工具
 - 統一的國際化和調試支援
 - 錯誤處理和日誌記錄
 
@@ -494,7 +494,7 @@ sequenceDiagram
     participant AUDIO as 音效管理器
     participant User as 用戶
 
-    AI->>MCP: interactive_feedback()
+    AI->>MCP: get_feedback()
     MCP->>WM: 創建/更新會話
     WM->>UI: 啟動 Web 服務
     WM->>User: 智能開啟瀏覽器

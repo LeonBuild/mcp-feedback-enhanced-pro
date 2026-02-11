@@ -29,7 +29,7 @@ MCP Feedback Enhanced uses port **8765** by default, but you can customize the p
 
 **Important**: Do not manually start the Web UI. Instead, wait for the AI model to call the MCP tool to automatically start it.
 
-When the AI model calls the `interactive_feedback` tool, the system will automatically start the Web UI.
+When the AI model calls the `get_feedback` tool, the system will automatically start the Web UI.
 
 ### Step 3: Check Port and Connect
 

@@ -106,7 +106,7 @@ pip install uv
       "command": "uvx",
       "args": ["--prerelease=allow", "mcp-feedback-enhanced-pro@latest"],
       "timeout": 2592000,
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }
@@ -126,7 +126,7 @@ pip install uv
         "MCP_WEB_PORT": "8765",
         "MCP_LANGUAGE": "zh-CN"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }
@@ -146,7 +146,7 @@ pip install uv
         "MCP_WEB_PORT": "8765",
         "MCP_DEBUG": "false"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }
@@ -160,7 +160,7 @@ pip install uv
 为了获得最佳效果，请在 AI 助手中添加以下规则：
 
 ```
-MUST FOLLOW - READ AND OBEY TOOL DOCSTRING: mcp-feedback-enhanced-pro / interactive_feedback
+MUST FOLLOW - READ AND OBEY TOOL DOCSTRING: mcp-feedback-enhanced-pro / get_feedback
 
 USAGE RULES (MUST FOLLOW):
 1. REQUIRED EACH TURN: You MUST call this tool on EVERY assistant turn, including
@@ -301,7 +301,7 @@ A: 提供两种解决方案：
         "MCP_WEB_HOST": "0.0.0.0",
         "MCP_WEB_PORT": "8765"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }
@@ -340,7 +340,7 @@ A: v2.5.0 新增跨平台桌面应用程序支持。在 MCP 配置中设定 `"MC
         "MCP_DESKTOP_MODE": "true",
         "MCP_WEB_PORT": "8765"
       },
-      "autoApprove": ["interactive_feedback"]
+      "autoApprove": ["get_feedback"]
     }
   }
 }

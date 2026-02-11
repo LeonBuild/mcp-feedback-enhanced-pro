@@ -18,7 +18,7 @@ MCP Feedback Enhanced 採用清晰的四層架構設計，每層負責特定的�
 graph TB
     subgraph "第一層：MCP 服務層"
         SERVER[server.py<br/>MCP 服務器<br/>FastMCP 實現]
-        TOOL[interactive_feedback<br/>核心工具<br/>參數驗證]
+        TOOL[get_feedback<br/>核心工具<br/>參數驗證]
         I18N[i18n.py<br/>國際化支援<br/>多語言管理]
         DEBUG[debug.py<br/>統一調試<br/>日誌輸出]
     end
@@ -113,7 +113,7 @@ graph TB
 mcp = FastMCP("mcp-feedback-enhanced-pro")
 
 @mcp.tool()
-async def interactive_feedback(
+async def get_feedback(
     project_directory: Annotated[str, Field(description="專案目錄路徑")] = ".",
     summary: Annotated[str, Field(description="AI 工作完成的摘要說明")] = "我已完成了您請求的任務。",
     timeout: Annotated[int, Field(description="等待用戶回饋的超時時間（秒）")] = 600,
@@ -130,7 +130,7 @@ async def interactive_feedback(
 
 **主要職責**：
 - **MCP 協議實現**: 基於 FastMCP 框架的標準實現
-- **工具註冊**: 註冊 `interactive_feedback` 和 `get_system_info` 工具
+- **工具註冊**: 註冊 `get_feedback` 和 `get_system_info` 工具
 - **環境檢測**: 自動識別 Local/SSH Remote/WSL 環境
 - **生命週期管理**: 控制 Web UI 的啟動、運行和清理
 - **接口層**: 作為 AI 助手與系統的主要通信接口
@@ -141,7 +141,7 @@ async def interactive_feedback(
 - 完整的錯誤處理和日誌記錄
 - 參數類型驗證和文檔生成
 
-### interactive_feedback 工具
+### get_feedback 工具
 
 **工具執行流程**：
 ```mermaid
@@ -347,7 +347,7 @@ class WebFeedbackSession:
     feedback_future: Optional[asyncio.Future] = None
 
     # 回饋數據
-    interactive_feedback: str = ""
+    get_feedback: str = ""
     command_logs: str = ""
     images: List[Dict[str, Any]] = field(default_factory=list)
 
@@ -374,7 +374,7 @@ class SessionStatus(Enum):
 ```python
 @dataclass
 class FeedbackResult:
-    interactive_feedback: str = ""
+    get_feedback: str = ""
     command_logs: str = ""
     images: List[Dict[str, Any]] = field(default_factory=list)
     session_id: str = ""

@@ -50,8 +50,8 @@ class TestMCPBasicWorkflow:
             await client.cleanup()
 
     @pytest.mark.asyncio
-    async def test_interactive_feedback_call_timeout(self, test_project_dir):
-        """測試 interactive_feedback 調用（超時情況）"""
+    async def test_get_feedback_call_timeout(self, test_project_dir):
+        """測試 get_feedback 調用（超時情況）"""
         client = SimpleMCPClient(timeout=30)
 
         try:
@@ -59,8 +59,8 @@ class TestMCPBasicWorkflow:
             assert await client.start_server() == True
             assert await client.initialize() == True
 
-            # 調用 interactive_feedback（設置短超時）
-            result = await client.call_interactive_feedback(
+            # 調用 get_feedback（設置短超時）
+            result = await client.call_get_feedback(
                 str(test_project_dir),
                 "測試調用 - 預期超時",
                 timeout=5,  # 5秒超時
@@ -105,15 +105,15 @@ class TestMCPWorkflowIntegration:
         assert steps.get("server_started") == True, "服務器啟動失敗"
         assert steps.get("initialized") == True, "初始化失敗"
 
-        # interactive_feedback 調用可能超時，這在測試環境是正常的
-        if not steps.get("interactive_feedback_called"):
+        # get_feedback 調用可能超時，這在測試環境是正常的
+        if not steps.get("get_feedback_called"):
             # 檢查是否是超時錯誤
             errors = result["errors"]
             timeout_error_found = any(
                 "超時" in error or "timeout" in error.lower() for error in errors
             )
             assert timeout_error_found, (
-                f"interactive_feedback 調用失敗，但不是超時錯誤: {errors}"
+                f"get_feedback 調用失敗，但不是超時錯誤: {errors}"
             )
 
         # 驗證性能數據
@@ -157,7 +157,7 @@ class TestMCPErrorHandling:
             assert await client.initialize() == True
 
             # 使用不存在的目錄
-            result = await client.call_interactive_feedback(
+            result = await client.call_get_feedback(
                 "/non/existent/directory", "測試無效目錄", timeout=5
             )
 
@@ -180,7 +180,7 @@ class TestMCPErrorHandling:
             assert process is not None
 
             # 模擬錯誤情況（不初始化就調用工具）
-            result = await client.call_interactive_feedback(
+            result = await client.call_get_feedback(
                 "/test", "測試錯誤處理", timeout=5
             )
 

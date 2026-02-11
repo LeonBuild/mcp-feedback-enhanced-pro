@@ -520,7 +520,7 @@ class WebFeedbackSession:
                 debug_log(f"會話 {self.session_id} 收到用戶回饋")
                 return {
                     "logs": "\n".join(self.command_logs),
-                    "interactive_feedback": self.feedback_result or "",
+                    "get_feedback": self.feedback_result or "",
                     "images": self.images,
                     "settings": self.settings,
                 }

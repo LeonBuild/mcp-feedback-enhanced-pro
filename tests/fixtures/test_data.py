@@ -106,7 +106,7 @@ class MockResponses:
         """成功的回饋回應"""
         return {
             "command_logs": "$ echo 'test'\ntest\n",
-            "interactive_feedback": "用戶確認：功能正常運作",
+            "get_feedback": "用戶確認：功能正常運作",
             "images": []
         }
     
@@ -115,7 +115,7 @@ class MockResponses:
         """包含圖片的回饋回應"""
         return {
             "command_logs": "",
-            "interactive_feedback": "請查看附加的截圖",
+            "get_feedback": "請查看附加的截圖",
             "images": [
                 {
                     "data": TestData.SAMPLE_IMAGE_BASE64,
@@ -130,7 +130,7 @@ class MockResponses:
         """超時回應"""
         return {
             "command_logs": "",
-            "interactive_feedback": "用戶回饋超時，使用默認行為",
+            "get_feedback": "用戶回饋超時，使用默認行為",
             "images": []
         }
     
@@ -140,7 +140,7 @@ class MockResponses:
         return {
             "error": error_message,
             "command_logs": "",
-            "interactive_feedback": "",
+            "get_feedback": "",
             "images": []
         }
     
@@ -173,7 +173,7 @@ class MockResponses:
             "result": {
                 "tools": [
                     {
-                        "name": "interactive_feedback",
+                        "name": "get_feedback",
                         "description": "收集用戶的互動回饋，支援文字和圖片",
                         "inputSchema": {
                             "type": "object",
@@ -207,7 +207,7 @@ class TestScenarios:
         "steps": [
             "啟動 MCP 服務器",
             "初始化連接",
-            "調用 interactive_feedback 工具",
+            "調用 get_feedback 工具",
             "驗證回應格式"
         ],
         "expected_result": {

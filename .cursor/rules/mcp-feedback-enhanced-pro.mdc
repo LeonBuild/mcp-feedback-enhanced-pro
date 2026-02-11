@@ -3,7 +3,7 @@ alwaysApply: true
 ---
 # MCP Interactive Feedback Loop (Required)
 
-MUST FOLLOW - READ AND OBEY TOOL DOCSTRING: mcp-feedback-enhanced-pro / interactive_feedback
+MUST FOLLOW - READ AND OBEY TOOL DOCSTRING: mcp-feedback-enhanced-pro / get_feedback
 
 USAGE RULES (MUST FOLLOW):
 1. REQUIRED EACH TURN: You MUST call this tool on EVERY assistant turn, including

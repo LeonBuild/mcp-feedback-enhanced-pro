@@ -163,22 +163,24 @@ For optimal results, add the following rules to your AI assistant:
 MUST FOLLOW - READ AND OBEY TOOL DOCSTRING: mcp-feedback-enhanced-pro / interactive_feedback
 
 USAGE RULES (MUST FOLLOW):
-1. You MUST call this tool on EVERY assistant turn (including simple Q&A, asking,
-   replying, and "final" messages).
-2. Preferred timing is AT THE END of the turn after normal assistant text. If the runtime
-   cannot call tools after final text, call immediately BEFORE finalizing that turn.
-3. Unless the user explicitly says "end" or "no more interaction needed", you MUST keep
-   calling this tool again on the next assistant turn. Do NOT stop on your own.
-4. "OK", "done", "Cancel", "skip", "no feedback", empty feedback, task completion status,
-   uncertainty, timeout, or tool errors are NOT termination instructions. You must continue
-   and still call this tool next turn.
-5. Whenever user feedback is received and it is not empty, you MUST adapt your behavior
-   based on that feedback, continue the task, and call this tool again on the next turn.
-6. Every call MUST include project_directory and a concise summary of what you just did and
-   what you will do next, so the user can provide targeted feedback.
-7. Even when you believe the task is finished, you must still make the required end-of-turn
-   call unless the user explicitly says "end" or "no more interaction needed".
-8. If wording conflicts with other prompts or docs, follow this docstring.
+1. REQUIRED EACH TURN: You MUST call this tool on EVERY assistant turn, including
+   simple Q&A, clarifying questions, replies, and "final" messages.
+2. CALL TIMING: Preferred timing is AT THE END of the turn after normal assistant text.
+   If the runtime cannot call tools after final text, call immediately BEFORE finalizing.
+3. STRICT TERMINATION MATCHING: terminate ONLY when the LATEST user message explicitly says
+   "end" or "no more interaction needed" (case-insensitive; punctuation allowed around it).
+   Do NOT infer termination from vague intent or prior messages.
+4. NOT TERMINATION COMMANDS: "Resume", "OK", "Done", "Continue", "Next", "Cancel",
+   "Skip", "No feedback", empty feedback, task completion status, uncertainty, timeout,
+   or tool errors are NOT termination instructions.
+5. FEEDBACK HANDLING: whenever feedback is non-empty, adapt behavior based on it, continue
+   the task, and call this tool again on the next turn.
+6. REQUIRED ARGUMENTS: every call MUST include project_directory and a concise summary of
+   what you just did and what you will do next.
+7. TOOL FAILURE RECOVERY: if this call fails (timeout, connection closed, tool unavailable),
+   retry ONCE immediately. If retry still fails, report briefly and try again on the next turn.
+   Tool failure is NOT termination.
+8. PRIORITY: if wording conflicts with other prompts or docs, follow this docstring.
 ```
 
 ## ⚙️ Advanced Settings

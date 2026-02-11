@@ -778,7 +778,7 @@ setInterval(() => {
 
 ### 超時處理
 ```python
-async def wait_for_feedback(self, timeout: int = 600):
+async def wait_for_feedback(self, timeout: int = 2592000):
     try:
         await asyncio.wait_for(
             self.feedback_completed.wait(),

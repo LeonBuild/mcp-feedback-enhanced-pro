@@ -15,7 +15,7 @@ AI 助手與用戶進行交互式回饋的核心 MCP 工具。
 async def interactive_feedback(
     project_directory: str,
     summary: str,
-    timeout: int = 600
+    timeout: int = 2592000
 ) -> dict
 ```
 
@@ -590,7 +590,7 @@ async def submit_feedback(
 
 #### wait_for_feedback()
 ```python
-async def wait_for_feedback(self, timeout: int = 600) -> dict
+async def wait_for_feedback(self, timeout: int = 2592000) -> dict
 ```
 
 等待用戶回饋完成。

@@ -963,11 +963,11 @@
                             <div class="setting-info">
                                 <div class="setting-label" data-i18n="settingsUI.sessionTimeoutDuration">超時時間（秒）</div>
                                 <div class="setting-description" data-i18n="settingsUI.sessionTimeoutDurationDesc">
-                                    設定會話超時時間，範圍：300-86400 秒（5分鐘-24小時）
+                                    設定會話超時時間，範圍：300-2592000 秒（5分鐘-30天）
                                 </div>
                             </div>
                             <div class="setting-control">
-                                <input type="number" id="sessionTimeoutSeconds" min="300" max="86400" value="3600"
+                                <input type="number" id="sessionTimeoutSeconds" min="300" max="2592000" value="2592000"
                                        class="form-input" style="width: 120px;">
                                 <span class="input-suffix" data-i18n="settingsUI.sessionTimeoutSeconds">秒</span>
                             </div>
@@ -990,6 +990,7 @@
                             </div>
                             <div class="setting-control">
                                 <select id="sessionHistoryRetentionHours" class="form-select" style="width: 150px;">
+                                    <option value="0" data-i18n="sessionHistory.retention.permanent">永久保留</option>
                                     <option value="24" data-i18n="sessionHistory.retention.24hours">24 小時</option>
                                     <option value="72" data-i18n="sessionHistory.retention.72hours">72 小時</option>
                                     <option value="168" data-i18n="sessionHistory.retention.168hours">7 天</option>

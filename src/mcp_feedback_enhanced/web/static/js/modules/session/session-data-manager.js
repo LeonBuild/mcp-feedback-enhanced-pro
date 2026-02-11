@@ -239,11 +239,6 @@
             this.sessionHistory.unshift(sessionData);
         }
 
-        // 限制歷史記錄數量
-        if (this.sessionHistory.length > 10) {
-            this.sessionHistory = this.sessionHistory.slice(0, 10);
-        }
-
         // 保存到伺服器端
         this.saveToServer();
 
@@ -571,6 +566,27 @@
     };
 
     /**
+     * 刪除單一歷史會話
+     */
+    SessionDataManager.prototype.deleteSession = function(sessionId) {
+        const originalCount = this.sessionHistory.length;
+        this.sessionHistory = this.sessionHistory.filter(function(session) {
+            return session.session_id !== sessionId;
+        });
+
+        if (this.sessionHistory.length === originalCount) {
+            return false;
+        }
+
+        this.saveToServer();
+        this.updateStats();
+        if (this.onHistoryChange) {
+            this.onHistoryChange(this.sessionHistory);
+        }
+        return true;
+    };
+
+    /**
      * 獲取專案目錄（輔助方法）
      */
     SessionDataManager.prototype.getProjectDirectory = function() {
@@ -883,7 +899,11 @@
             return;
         }
 
-        const retentionHours = this.settingsManager.get('sessionHistoryRetentionHours', 72);
+        const retentionHours = this.settingsManager.get('sessionHistoryRetentionHours', 0);
+        if (retentionHours <= 0) {
+            return;
+        }
+
         const retentionMs = retentionHours * 60 * 60 * 1000;
         const now = TimeUtils.getCurrentTimestamp();
 
@@ -908,7 +928,11 @@
             return false;
         }
 
-        const retentionHours = this.settingsManager.get('sessionHistoryRetentionHours', 72);
+        const retentionHours = this.settingsManager.get('sessionHistoryRetentionHours', 0);
+        if (retentionHours <= 0) {
+            return false;
+        }
+
         const retentionMs = retentionHours * 60 * 60 * 1000;
         const now = TimeUtils.getCurrentTimestamp();
         const sessionTime = session.saved_at || session.completed_at || session.created_at || 0;

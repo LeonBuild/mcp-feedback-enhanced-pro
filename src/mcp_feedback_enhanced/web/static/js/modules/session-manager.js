@@ -641,6 +641,46 @@
     };
 
     /**
+     * 刪除單一會話
+     */
+    SessionManager.prototype.deleteSingleSession = function(sessionId) {
+        if (!this.dataManager) {
+            console.error('📋 DataManager 未初始化');
+            return;
+        }
+
+        const confirmMessage = window.i18nManager ?
+            window.i18nManager.t('sessionHistory.management.confirmDeleteSingle') :
+            '確定要刪除此會話嗎？此操作無法復原。';
+
+        if (!confirm(confirmMessage)) {
+            return;
+        }
+
+        try {
+            const deleted = this.dataManager.deleteSession(sessionId);
+            if (!deleted) {
+                throw new Error('session not found');
+            }
+
+            if (window.MCPFeedback && window.MCPFeedback.Utils && window.MCPFeedback.Utils.showMessage) {
+                const message = window.i18nManager ?
+                    window.i18nManager.t('sessionHistory.management.deleteSingleSuccess') :
+                    '會話已刪除';
+                window.MCPFeedback.Utils.showMessage(message, 'success');
+            }
+        } catch (error) {
+            console.error('📋 刪除單一會話失敗:', error);
+            if (window.MCPFeedback && window.MCPFeedback.Utils && window.MCPFeedback.Utils.showMessage) {
+                const message = window.i18nManager ?
+                    window.i18nManager.t('sessionHistory.management.deleteSingleFailed', { error: error.message }) :
+                    '刪除失敗: ' + error.message;
+                window.MCPFeedback.Utils.showMessage(message, 'error');
+            }
+        }
+    };
+
+    /**
      * 清空會話歷史
      */
     SessionManager.prototype.clearSessionHistory = function() {
@@ -1040,6 +1080,15 @@
     window.MCPFeedback.SessionManager.exportSingleSession = function(sessionId) {
         if (window.MCPFeedback && window.MCPFeedback.app && window.MCPFeedback.app.sessionManager) {
             window.MCPFeedback.app.sessionManager.exportSingleSession(sessionId);
+        } else {
+            console.warn('找不到 SessionManager 實例');
+        }
+    };
+
+    // 全域刪除單一會話方法
+    window.MCPFeedback.SessionManager.deleteSingleSession = function(sessionId) {
+        if (window.MCPFeedback && window.MCPFeedback.app && window.MCPFeedback.app.sessionManager) {
+            window.MCPFeedback.app.sessionManager.deleteSingleSession(sessionId);
         } else {
             console.warn('找不到 SessionManager 實例');
         }

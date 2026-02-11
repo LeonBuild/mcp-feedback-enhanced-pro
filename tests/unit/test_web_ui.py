@@ -4,6 +4,7 @@ Web UI 單元測試
 """
 
 import time
+from pathlib import Path
 
 import pytest
 
@@ -119,6 +120,12 @@ class TestWebFeedbackSession:
         assert session.status == SessionStatus.FEEDBACK_SUBMITTED
         assert session.status_message == "已提交回饋"
 
+        # 舊版相容接口：直接更新狀態
+        result = session.update_status(SessionStatus.COMPLETED, "會話完成")
+        assert result is True
+        assert session.status == SessionStatus.COMPLETED
+        assert session.status_message == "會話完成"
+
     def test_session_age_and_idle_time(self, test_project_dir):
         """測試會話年齡和空閒時間"""
         from mcp_feedback_enhanced.web.models import WebFeedbackSession
@@ -176,6 +183,15 @@ class TestWebUIRoutes:
 
         assert response.status_code == 200
         assert "MCP Feedback Enhanced" in response.text
+
+    def test_feedback_template_contains_permanent_retention_option(self):
+        """測試模板包含永久保留選項"""
+        template_path = Path(__file__).resolve().parents[2] / "src" / "mcp_feedback_enhanced" / "web" / "templates" / "feedback.html"
+        content = template_path.read_text(encoding="utf-8")
+
+        assert 'id="sessionHistoryRetentionHours"' in content
+        assert 'value="0"' in content
+        assert 'sessionHistory.retention.permanent' in content
 
     @pytest.mark.asyncio
     async def test_index_route_with_session(self, web_ui_manager, test_project_dir):

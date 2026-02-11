@@ -45,7 +45,7 @@
             selectedAudioId: 'default-beep',
             customAudios: [],
             // 會話歷史設定
-            sessionHistoryRetentionHours: 72,
+            sessionHistoryRetentionHours: 0,
             // 用戶訊息記錄設定
             userMessageRecordingEnabled: true,
             userMessagePrivacyLevel: 'full', // 'full', 'basic', 'disabled'
@@ -53,7 +53,7 @@
             combinedFeedbackTextHeight: 150, // combinedFeedbackText textarea 的高度（px）
             // 會話超時設定
             sessionTimeoutEnabled: false,  // 預設關閉
-            sessionTimeoutSeconds: 3600,   // 預設 1 小時（秒）
+            sessionTimeoutSeconds: 2592000,   // 預設 30 天（秒）
             // 自動執行命令設定
             autoCommandEnabled: true,      // 是否啟用自動執行命令
             commandOnNewSession: '',       // 新會話建立時執行的命令
@@ -850,8 +850,8 @@
         const sessionHistoryRetentionSelect = Utils.safeQuerySelector('#sessionHistoryRetentionHours');
         if (sessionHistoryRetentionSelect) {
             sessionHistoryRetentionSelect.addEventListener('change', function(e) {
-                const hours = parseInt(e.target.value);
-                self.set('sessionHistoryRetentionHours', hours);
+                const hours = parseInt(e.target.value, 10);
+                self.set('sessionHistoryRetentionHours', Number.isNaN(hours) ? 0 : hours);
                 console.log('會話歷史保存期限已更新:', hours, '小時');
 
                 // 觸發清理過期會話
@@ -959,9 +959,9 @@
                 if (isNaN(seconds) || seconds < 300) {
                     e.target.value = 300;
                     self.set('sessionTimeoutSeconds', 300);
-                } else if (seconds > 86400) {
-                    e.target.value = 86400;
-                    self.set('sessionTimeoutSeconds', 86400);
+                } else if (seconds > 2592000) {
+                    e.target.value = 2592000;
+                    self.set('sessionTimeoutSeconds', 2592000);
                 } else {
                     self.set('sessionTimeoutSeconds', seconds);
                 }

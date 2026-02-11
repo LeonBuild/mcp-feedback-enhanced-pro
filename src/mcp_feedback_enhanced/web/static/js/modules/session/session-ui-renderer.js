@@ -647,6 +647,24 @@
             });
 
             actions.appendChild(exportButton);
+
+            const deleteButton = DOMUtils.createElement('button', {
+                className: 'btn-small btn-secondary',
+                attributes: {
+                    'data-i18n': 'sessionHistory.management.deleteSingle'
+                },
+                textContent: window.i18nManager ? window.i18nManager.t('sessionHistory.management.deleteSingle') : '刪除此會話',
+                style: 'margin-left: 4px; font-size: 11px; padding: 2px 6px; color: var(--error-color);'
+            });
+
+            DOMUtils.addEventListener(deleteButton, 'click', function(e) {
+                e.stopPropagation();
+                if (window.MCPFeedback && window.MCPFeedback.SessionManager) {
+                    window.MCPFeedback.SessionManager.deleteSingleSession(sessionData.session_id);
+                }
+            });
+
+            actions.appendChild(deleteButton);
         }
 
         return actions;

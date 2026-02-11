@@ -84,9 +84,11 @@ class I18nManager:
             return env_lang
 
         # 3. 檢查其他環境變數（LANG, LC_ALL 等）
+        env_locale_detected = False
         for env_var in ["LANG", "LC_ALL", "LC_MESSAGES", "LANGUAGE"]:
             env_value = os.getenv(env_var, "").strip()
             if env_value:
+                env_locale_detected = True
                 if env_value.startswith("zh_TW") or env_value.startswith("zh_Hant"):
                     return "zh-TW"
                 if env_value.startswith("zh_CN") or env_value.startswith("zh_Hans"):
@@ -113,7 +115,11 @@ class I18nManager:
             except Exception:
                 pass
 
-        # 5. 回退到默認語言
+        # 5. 若環境語言存在但不受支援，回退到英文
+        if env_locale_detected:
+            return "en"
+
+        # 6. 回退到默認語言
         return self._fallback_language
 
     def _load_saved_language(self) -> str | None:

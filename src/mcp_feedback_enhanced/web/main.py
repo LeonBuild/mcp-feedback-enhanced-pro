@@ -23,6 +23,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from ..debug import web_debug_log as debug_log
+from ..i18n import get_i18n_manager
 from ..utils.error_handler import ErrorHandler, ErrorType
 from ..utils.memory_monitor import get_memory_monitor
 from .models import CleanupReason, SessionStatus, WebFeedbackSession
@@ -148,7 +149,8 @@ class WebUIManager:
     def _init_basic_components(self):
         """同步初始化基本組件"""
         # 基本組件初始化（必須同步）
-        # 移除 i18n 管理器，因為翻譯已移至前端
+        # 保留 i18n 屬性以維持測試與舊介面相容
+        self.i18n = get_i18n_manager()
 
         # 設置靜態文件和模板（必須同步）
         self._setup_static_files()
@@ -1097,7 +1099,7 @@ def get_web_ui_manager() -> WebUIManager:
 
 
 async def launch_web_feedback_ui(
-    project_directory: str, summary: str, timeout: int = 600
+    project_directory: str, summary: str, timeout: int = 2592000
 ) -> dict:
     """
     啟動 Web 回饋介面並等待用戶回饋 - 重構為使用根路徑

@@ -54,7 +54,7 @@
         this.sessionTimeoutRemaining = 0; // 剩餘秒數
         this.sessionTimeoutSettings = {
             enabled: false,
-            seconds: 3600
+            seconds: 2592000
         };
     }
 

@@ -250,7 +250,7 @@ export MCP_FEEDBACK_SESSION_RETENTION=72
         "debug": false
     },
     "session": {
-        "timeout": 600,
+        "timeout": 2592000,
         "max_connections": 5
     },
     "ui": {

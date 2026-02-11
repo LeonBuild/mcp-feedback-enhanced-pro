@@ -144,7 +144,7 @@
         "sessionTimeoutEnable": "启用会话超时",
         "sessionTimeoutEnableDesc": "启用后，会话将在指定时间后自动关闭",
         "sessionTimeoutDuration": "超时时间（秒）",
-        "sessionTimeoutDurationDesc": "设置会话超时时间，范围：300-86400 秒（5分钟-24小时）",
+        "sessionTimeoutDurationDesc": "设置会话超时时间，范围：300-2592000 秒（5分钟-30天）",
         "sessionTimeoutSeconds": "秒"
     },
     "languages": {
@@ -281,6 +281,10 @@
             "exportAll": "导出全部",
             "exportAllTitle": "导出所有会话历史到文件",
             "exportSingle": "导出此会话",
+            "deleteSingle": "删除此会话",
+            "confirmDeleteSingle": "确定要删除此会话吗？此操作无法恢复。",
+            "deleteSingleSuccess": "会话已删除",
+            "deleteSingleFailed": "删除失败: {error}",
             "confirmClear": "确定要清空所有会话历史吗？",
             "exportSuccess": "会话历史已导出",
             "clearSuccess": "会话历史已清空",
@@ -292,6 +296,7 @@
             "clearFailedGeneric": "清空失败"
         },
         "retention": {
+            "permanent": "永久保留",
             "24hours": "24 小时",
             "72hours": "72 小时",
             "168hours": "7 天",

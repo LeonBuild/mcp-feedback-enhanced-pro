@@ -104,7 +104,7 @@ pip install uv
     "mcp-feedback-enhanced": {
       "command": "uvx",
       "args": ["mcp-feedback-enhanced@latest"],
-      "timeout": 600,
+      "timeout": 2592000,
       "autoApprove": ["interactive_feedback"]
     }
   }
@@ -118,7 +118,7 @@ pip install uv
     "mcp-feedback-enhanced": {
       "command": "uvx",
       "args": ["mcp-feedback-enhanced@latest"],
-      "timeout": 600,
+      "timeout": 2592000,
       "env": {
         "MCP_DEBUG": "false",
         "MCP_WEB_HOST": "127.0.0.1",
@@ -138,7 +138,7 @@ pip install uv
     "mcp-feedback-enhanced": {
       "command": "uvx",
       "args": ["mcp-feedback-enhanced@latest"],
-      "timeout": 600,
+      "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",
         "MCP_WEB_HOST": "127.0.0.1",
@@ -278,7 +278,7 @@ Set `"MCP_WEB_HOST": "0.0.0.0"` in MCP configuration to allow remote access:
     "mcp-feedback-enhanced": {
       "command": "uvx",
       "args": ["mcp-feedback-enhanced@latest"],
-      "timeout": 600,
+      "timeout": 2592000,
       "env": {
         "MCP_WEB_HOST": "0.0.0.0",
         "MCP_WEB_PORT": "8765"
@@ -317,7 +317,7 @@ A: v2.5.0 introduces cross-platform desktop application support. Set `"MCP_DESKT
     "mcp-feedback-enhanced": {
       "command": "uvx",
       "args": ["mcp-feedback-enhanced@latest"],
-      "timeout": 600,
+      "timeout": 2592000,
       "env": {
         "MCP_DESKTOP_MODE": "true",
         "MCP_WEB_PORT": "8765"

@@ -143,7 +143,7 @@
         "sessionTimeoutEnable": "Enable Session Timeout",
         "sessionTimeoutEnableDesc": "When enabled, the session will automatically close after the specified time",
         "sessionTimeoutDuration": "Timeout Duration (seconds)",
-        "sessionTimeoutDurationDesc": "Set session timeout duration, range: 300-86400 seconds (5 minutes - 24 hours)",
+        "sessionTimeoutDurationDesc": "Set session timeout duration, range: 300-2592000 seconds (5 minutes - 30 days)",
         "sessionTimeoutSeconds": "seconds"
     },
     "languages": {
@@ -280,6 +280,10 @@
             "exportAll": "Export All",
             "exportAllTitle": "Export all session history to file",
             "exportSingle": "Export This Session",
+            "deleteSingle": "Delete this session",
+            "confirmDeleteSingle": "Are you sure you want to delete this session? This action cannot be undone.",
+            "deleteSingleSuccess": "Session deleted successfully",
+            "deleteSingleFailed": "Delete failed: {error}",
             "confirmClear": "Are you sure you want to clear all session history?",
             "exportSuccess": "Session history exported successfully",
             "clearSuccess": "Session history cleared successfully",
@@ -291,6 +295,7 @@
             "clearFailedGeneric": "Clear failed"
         },
         "retention": {
+            "permanent": "Keep forever",
             "24hours": "24 hours",
             "72hours": "72 hours",
             "168hours": "7 days",

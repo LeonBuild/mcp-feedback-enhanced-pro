@@ -31,8 +31,7 @@ import sys
 from typing import Annotated, Any
 
 from fastmcp import FastMCP
-from fastmcp.utilities.types import Image as MCPImage
-from mcp.types import TextContent
+from mcp.types import ImageContent, TextContent
 from pydantic import Field
 
 # 導入統一的調試功能
@@ -111,6 +110,33 @@ _encoding_initialized = init_encoding()
 SERVER_NAME = "互動式回饋收集 MCP"
 SSH_ENV_VARS = ["SSH_CONNECTION", "SSH_CLIENT", "SSH_TTY"]
 REMOTE_ENV_VARS = ["REMOTE_CONTAINERS", "CODESPACES"]
+
+
+def _get_int_env(name: str, default: int) -> int:
+    """安全讀取整數環境變數，讀取失敗時返回預設值。"""
+    value = os.getenv(name)
+    if value is None:
+        return default
+
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        debug_log(f"環境變數 {name} 無效（{value}），使用預設值 {default}")
+        return default
+
+
+INTERACTIVE_TIMEOUT_MIN = max(1, _get_int_env("MCP_INTERACTIVE_TIMEOUT_MIN", 30))
+INTERACTIVE_TIMEOUT_MAX = max(
+    INTERACTIVE_TIMEOUT_MIN,
+    _get_int_env("MCP_INTERACTIVE_TIMEOUT_MAX", 2592000),
+)
+INTERACTIVE_TIMEOUT_DEFAULT = min(
+    INTERACTIVE_TIMEOUT_MAX,
+    max(
+        INTERACTIVE_TIMEOUT_MIN,
+        _get_int_env("MCP_INTERACTIVE_TIMEOUT_DEFAULT", 2592000),
+    ),
+)
 
 
 # 初始化 MCP 服務器
@@ -360,17 +386,17 @@ def create_feedback_text(feedback_data: dict) -> str:
     return "\n\n".join(text_parts) if text_parts else "用戶未提供任何回饋內容。"
 
 
-def process_images(images_data: list[dict]) -> list[MCPImage]:
+def process_images(images_data: list[dict]) -> list[ImageContent]:
     """
-    處理圖片資料，轉換為 MCP 圖片對象
+    處理圖片資料，轉換為 MCP 圖片內容對象
 
     Args:
         images_data: 圖片資料列表
 
     Returns:
-        List[MCPImage]: MCP 圖片對象列表
+        List[ImageContent]: MCP 圖片內容列表
     """
-    mcp_images = []
+    image_contents = []
 
     for i, img in enumerate(images_data, 1):
         try:
@@ -378,42 +404,51 @@ def process_images(images_data: list[dict]) -> list[MCPImage]:
                 debug_log(f"圖片 {i} 沒有資料，跳過")
                 continue
 
-            # 檢查數據類型並相應處理
             if isinstance(img["data"], bytes):
-                # 如果是原始 bytes 數據，直接使用
-                image_bytes = img["data"]
+                image_base64 = base64.b64encode(img["data"]).decode("utf-8")
                 debug_log(
-                    f"圖片 {i} 使用原始 bytes 數據，大小: {len(image_bytes)} bytes"
+                    f"圖片 {i} 從 bytes 轉換為 base64，大小: {len(img['data'])} bytes"
                 )
             elif isinstance(img["data"], str):
-                # 如果是 base64 字符串，進行解碼
-                image_bytes = base64.b64decode(img["data"])
-                debug_log(f"圖片 {i} 從 base64 解碼，大小: {len(image_bytes)} bytes")
+                image_base64 = img["data"].strip()
+
+                if image_base64.startswith("data:") and "," in image_base64:
+                    image_base64 = image_base64.split(",", 1)[1]
+
+                image_base64 = "".join(image_base64.split())
+
+                base64.b64decode(image_base64)
+                debug_log(f"圖片 {i} 使用 base64 字符串，長度: {len(image_base64)}")
             else:
                 debug_log(f"圖片 {i} 數據類型不支援: {type(img['data'])}")
                 continue
 
-            if len(image_bytes) == 0:
+            if len(image_base64) == 0:
                 debug_log(f"圖片 {i} 數據為空，跳過")
                 continue
 
-            # 根據文件名推斷格式
             file_name = img.get("name", "image.png")
             if file_name.lower().endswith((".jpg", ".jpeg")):
-                image_format = "jpeg"
+                mime_type = "image/jpeg"
             elif file_name.lower().endswith(".gif"):
-                image_format = "gif"
+                mime_type = "image/gif"
+            elif file_name.lower().endswith(".webp"):
+                mime_type = "image/webp"
+            elif file_name.lower().endswith(".bmp"):
+                mime_type = "image/bmp"
             else:
-                image_format = "png"  # 默認使用 PNG
+                mime_type = "image/png"
 
-            # 創建 MCPImage 對象
-            mcp_image = MCPImage(data=image_bytes, format=image_format)
-            mcp_images.append(mcp_image)
+            image_content = ImageContent(
+                type="image",
+                data=image_base64,
+                mimeType=mime_type,
+            )
+            image_contents.append(image_content)
 
-            debug_log(f"圖片 {i} ({file_name}) 處理成功，格式: {image_format}")
+            debug_log(f"圖片 {i} ({file_name}) 處理成功，MIME 類型: {mime_type}")
 
         except Exception as e:
-            # 使用統一錯誤處理（不影響 JSON RPC）
             error_id = ErrorHandler.log_error_with_context(
                 e,
                 context={"operation": "圖片處理", "image_index": i},
@@ -421,9 +456,8 @@ def process_images(images_data: list[dict]) -> list[MCPImage]:
             )
             debug_log(f"圖片 {i} 處理失敗 [錯誤ID: {error_id}]: {e}")
 
-    debug_log(f"共處理 {len(mcp_images)} 張圖片")
-    return mcp_images
-
+    debug_log(f"共處理 {len(image_contents)} 張圖片")
+    return image_contents
 
 # ===== MCP 工具定義 =====
 @mcp.tool()
@@ -432,7 +466,7 @@ async def interactive_feedback(
     summary: Annotated[
         str, Field(description="AI 工作完成的摘要說明")
     ] = "我已完成了您請求的任務。",
-    timeout: Annotated[int, Field(description="等待用戶回饋的超時時間（秒）")] = 600,
+    timeout: Annotated[int, Field(description="等待用戶回饋的超時時間（秒）")] = INTERACTIVE_TIMEOUT_DEFAULT,
 ) -> list:
     """Interactive feedback collection tool for LLM agents.
 
@@ -446,10 +480,10 @@ async def interactive_feedback(
     Args:
         project_directory: Project directory path for context
         summary: Summary of AI work completed for user review
-        timeout: Timeout in seconds for waiting user feedback (default: 600 seconds)
+        timeout: Timeout in seconds for waiting user feedback
 
     Returns:
-        list: List containing TextContent and MCPImage objects representing user feedback
+        list: List containing TextContent and image objects representing user feedback
     """
     # 環境偵測
     is_remote = is_remote_environment()
@@ -463,6 +497,16 @@ async def interactive_feedback(
         if not os.path.exists(project_directory):
             project_directory = os.getcwd()
         project_directory = os.path.abspath(project_directory)
+
+        # 規範 timeout（避免不合理的極小值導致瞬間超時）
+        original_timeout = timeout
+        timeout = min(INTERACTIVE_TIMEOUT_MAX, max(INTERACTIVE_TIMEOUT_MIN, timeout))
+        if timeout != original_timeout:
+            debug_log(
+                "收到不合理 timeout 參數，已自動調整: "
+                f"{original_timeout} -> {timeout} "
+                f"(範圍 {INTERACTIVE_TIMEOUT_MIN}-{INTERACTIVE_TIMEOUT_MAX})"
+            )
 
         # 使用 Web 模式
         debug_log("回饋模式: web")

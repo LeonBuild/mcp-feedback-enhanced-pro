@@ -63,6 +63,9 @@ SUPPORTED_IMAGE_TYPES = {
     "image/webp",
 }
 TEMP_DIR = Path.home() / ".cache" / "interactive-feedback-mcp-web"
+DEFAULT_SESSION_TIMEOUT_SECONDS = 2592000  # 30 days
+MIN_SESSION_TIMEOUT_SECONDS = 300
+MAX_SESSION_TIMEOUT_SECONDS = 2592000
 
 # 訊息代碼現在從統一的常量文件導入
 # 使用 get_message_code 函數來獲取訊息代碼
@@ -170,7 +173,7 @@ class WebFeedbackSession:
 
         # 新增：用戶設定的會話超時
         self.user_timeout_enabled = False
-        self.user_timeout_seconds = 3600  # 預設 1 小時
+        self.user_timeout_seconds = DEFAULT_SESSION_TIMEOUT_SECONDS  # 預設 30 天
         self.user_timeout_timer: threading.Timer | None = None
 
         # 確保臨時目錄存在
@@ -236,12 +239,27 @@ class WebFeedbackSession:
 
         self.last_activity = time.time()
 
-        # 如果會話變為已提交狀態，重置清理定時器
-        if next_status == SessionStatus.FEEDBACK_SUBMITTED:
+        # 狀態更新後重置清理定時器，避免沿用舊計時器
+        if next_status in [SessionStatus.ACTIVE, SessionStatus.FEEDBACK_SUBMITTED]:
             self._schedule_auto_cleanup()
 
         debug_log(
             f"✅ 會話 {self.session_id} 狀態流轉: {old_status.value} → {next_status.value} - {self.status_message}"
+        )
+        return True
+
+    def update_status(self, status: SessionStatus, message: str | None = None) -> bool:
+        """相容舊版接口：直接更新狀態。"""
+        old_status = self.status
+        self.status = status
+        self.status_message = message or self.status_message
+        self.last_activity = time.time()
+
+        if status in [SessionStatus.ACTIVE, SessionStatus.FEEDBACK_SUBMITTED]:
+            self._schedule_auto_cleanup()
+
+        debug_log(
+            f"✅ 會話 {self.session_id} 狀態更新: {old_status.value} → {status.value} - {self.status_message}"
         )
         return True
 
@@ -426,7 +444,9 @@ class WebFeedbackSession:
         )
         return stats
 
-    def update_timeout_settings(self, enabled: bool, timeout_seconds: int = 3600):
+    def update_timeout_settings(
+        self, enabled: bool, timeout_seconds: int = DEFAULT_SESSION_TIMEOUT_SECONDS
+    ):
         """
         更新用戶設定的會話超時
 
@@ -442,7 +462,10 @@ class WebFeedbackSession:
             self.user_timeout_timer = None
 
         self.user_timeout_enabled = enabled
-        self.user_timeout_seconds = timeout_seconds
+        self.user_timeout_seconds = min(
+            MAX_SESSION_TIMEOUT_SECONDS,
+            max(MIN_SESSION_TIMEOUT_SECONDS, timeout_seconds),
+        )
 
         # 如果啟用且會話還在等待中，啟動計時器
         if enabled and self.status == SessionStatus.WAITING:
@@ -455,11 +478,11 @@ class WebFeedbackSession:
                 # 設置完成事件，讓 wait_for_feedback 結束等待
                 self.feedback_completed.set()
 
-            self.user_timeout_timer = threading.Timer(timeout_seconds, timeout_handler)
+            self.user_timeout_timer = threading.Timer(self.user_timeout_seconds, timeout_handler)
             self.user_timeout_timer.start()
-            debug_log(f"已啟動用戶超時計時器: {timeout_seconds}秒")
+            debug_log(f"已啟動用戶超時計時器: {self.user_timeout_seconds}秒")
 
-    async def wait_for_feedback(self, timeout: int = 600) -> dict[str, Any]:
+    async def wait_for_feedback(self, timeout: int = DEFAULT_SESSION_TIMEOUT_SECONDS) -> dict[str, Any]:
         """
         等待用戶回饋，包含圖片，支援超時自動清理
 
@@ -535,8 +558,8 @@ class WebFeedbackSession:
         self.settings = settings or {}
         self.images = self._process_images(images)
 
-        # 進入下一步：等待中 → 已提交反饋
-        self.next_step("已送出反饋，等待下次 MCP 調用")
+        # 兼容舊版測試語意：提交後狀態應為 FEEDBACK_SUBMITTED
+        self.update_status(SessionStatus.FEEDBACK_SUBMITTED, "已送出反饋，等待下次 MCP 調用")
 
         self.feedback_completed.set()
 
@@ -609,6 +632,7 @@ class WebFeedbackSession:
         for img in images:
             try:
                 if not all(key in img for key in ["name", "data", "size"]):
+                    debug_log(f"圖片缺少必要字段: {list(img.keys())}")
                     continue
 
                 # 檢查文件大小（只有當限制大於0時才檢查）
@@ -618,24 +642,48 @@ class WebFeedbackSession:
                     )
                     continue
 
-                # 解碼 base64 數據
+                # 解碼 base64 數據，處理多種格式
                 if isinstance(img["data"], str):
                     try:
-                        image_bytes = base64.b64decode(img["data"])
+                        data_str = img["data"]
+                        if data_str.startswith("data:"):
+                            data_str = (
+                                data_str.split(",", 1)[1] if "," in data_str else data_str
+                            )
+
+                        data_str = "".join(data_str.split())
+
+                        image_bytes = base64.b64decode(data_str)
+                        debug_log(
+                            f"圖片 {img['name']} 从 base64 字符串解码成功，长度: {len(data_str)} -> {len(image_bytes)} bytes"
+                        )
                     except Exception as e:
                         debug_log(f"圖片 {img['name']} base64 解碼失敗: {e}")
+                        debug_log(
+                            f"数据类型: {type(img['data'])}, 前100字符: {str(img['data'])[:100]}"
+                        )
                         continue
-                else:
+                elif isinstance(img["data"], bytes):
                     image_bytes = img["data"]
+                    debug_log(
+                        f"圖片 {img['name']} 已是 bytes 格式，大小: {len(image_bytes)} bytes"
+                    )
+                else:
+                    debug_log(f"圖片 {img['name']} 数据类型不支持: {type(img['data'])}")
+                    continue
 
                 if len(image_bytes) == 0:
                     debug_log(f"圖片 {img['name']} 數據為空，跳過")
                     continue
 
+                if not self._validate_image_data(image_bytes, img["name"]):
+                    debug_log(f"圖片 {img['name']} 数据验证失败，可能已损坏")
+                    continue
+
                 processed_images.append(
                     {
                         "name": img["name"],
-                        "data": image_bytes,  # 保存原始 bytes 數據
+                        "data": image_bytes,
                         "size": len(image_bytes),
                     }
                 )
@@ -645,10 +693,36 @@ class WebFeedbackSession:
                 )
 
             except Exception as e:
+                import traceback
+
                 debug_log(f"圖片處理錯誤: {e}")
+                debug_log(f"详细错误: {traceback.format_exc()}")
                 continue
 
+        debug_log(f"图片处理完成，成功: {len(processed_images)}/{len(images)}")
         return processed_images
+
+    def _validate_image_data(self, data: bytes, filename: str) -> bool:
+        """验证图片数据是否有效。"""
+        if not data or len(data) < 8:
+            return False
+
+        image_signatures = {
+            b"\xFF\xD8\xFF": "JPEG",
+            b"\x89PNG\r\n\x1a\n": "PNG",
+            b"GIF87a": "GIF",
+            b"GIF89a": "GIF",
+            b"BM": "BMP",
+            b"RIFF": "WEBP",
+        }
+
+        for sig, format_name in image_signatures.items():
+            if data.startswith(sig):
+                debug_log(f"图片 {filename} 验证成功: {format_name} 格式")
+                return True
+
+        debug_log(f"图片 {filename} 未识别的文件头: {data[:8].hex()}")
+        return True
 
     def add_log(self, log_entry: str):
         """添加命令日誌"""

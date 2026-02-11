@@ -456,16 +456,20 @@ jobs:
 
 
     - name: Build package
-      run: uv build
+      run: uv build --no-sources
 
     - name: Check package
       run: uv run twine check dist/*
 
-    - name: Publish to PyPI
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: Publish to PyPI (Trusted Publishing)
+      if: ${{ secrets.PYPI_API_TOKEN == "" }}
+      run: uv publish
+
+    - name: Publish to PyPI (Token Fallback)
+      if: ${{ secrets.PYPI_API_TOKEN != "" }}
+      env:
+        UV_PUBLISH_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      run: uv publish
 
 
 

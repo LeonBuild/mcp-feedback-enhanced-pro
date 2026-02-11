@@ -18,8 +18,8 @@ MCP Interactive Feedback Enhanced
 """
 
 __version__ = "2.6.0"
-__author__ = "Minidoracat"
-__email__ = "minidora0702@gmail.com"
+__author__ = "LeonBuild"
+__email__ = "71315684+LeonBuild@users.noreply.github.com"
 
 import os
 

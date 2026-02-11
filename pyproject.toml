@@ -5,7 +5,7 @@ description = "Enhanced MCP server for interactive user feedback and command exe
 readme = "README.md"
 requires-python = ">=3.11"
 authors = [
-    { name = "Minidoracat", email = "minidora0702@gmail.com" }
+    { name = "LeonBuild", email = "71315684+LeonBuild@users.noreply.github.com" }
 ]
 keywords = ["mcp", "ai", "feedback", "web-ui", "desktop-app", "interactive", "development", "cross-platform", "tauri", "dual-interface"]
 classifiers = [

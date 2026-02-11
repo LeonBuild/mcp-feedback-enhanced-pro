@@ -11,13 +11,13 @@ MCP Feedback Enhanced Desktop Application
 - 跨平台支援（Windows、macOS、Linux）
 - 無需瀏覽器的獨立運行環境
 
-作者: Minidoracat
+作者: LeonBuild
 版本: 2.4.3
 """
 
 __version__ = "2.4.3"
-__author__ = "Minidoracat"
-__email__ = "minidora0702@gmail.com"
+__author__ = "LeonBuild"
+__email__ = "71315684+LeonBuild@users.noreply.github.com"
 
 from .desktop_app import DesktopApp, launch_desktop_app
 

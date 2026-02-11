@@ -2,6 +2,21 @@
 
 本文件记录了 **MCP Feedback Enhanced** 的所有版本更新内容。
 
+## [v3.0.1] - 2026-02-11 - Pro 命名统一与 uvx 预发布参数说明
+
+### 🌟 版本亮点
+这是一个小版本修复，重点统一产品命名并完善安装说明。CLI 输出现在统一为 Pro 名称，文档与示例已补充当前 FastMCP 依赖场景下所需的 uvx 预发布参数。
+
+### ✨ 改进功能
+- CLI 版本/帮助输出统一为 `MCP Feedback Enhanced Pro`
+- 文档、示例与工作流命令补充为 `uvx --prerelease=allow mcp-feedback-enhanced-pro ...`
+- 在 README 与发布说明中补充对上游项目 `Minidoracat/mcp-feedback-enhanced` 的致谢
+
+### 📌 兼容性说明
+- 当前依赖为 `fastmcp>=3.0.0b2`，在 FastMCP 稳定版依赖落地前，uvx 安装需带 `--prerelease=allow`
+
+---
+
 ## [v3.0.0] - 2026-02-11 - FastMCP 3 升级、包名统一与发布流程更新
 
 ### 🌟 版本亮点

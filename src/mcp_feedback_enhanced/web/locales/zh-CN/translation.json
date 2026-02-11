@@ -1,6 +1,6 @@
 {
     "app": {
-        "title": "MCP 交互反馈系统",
+        "title": "MCP 交互反馈 Pro",
         "subtitle": "AI 助手交互反馈平台",
         "projectDirectory": "项目目录",
         "clickToCopyPath": "点击复制完整路径",
@@ -41,7 +41,7 @@
             "paste": "Ctrl+V 粘贴图片 (Mac 用 Cmd+V)"
         },
         "submitSuccess": "反馈提交成功！",
-        "submittedWaiting": "已送出反馈，等待下次 MCP 调用...",
+        "submittedWaiting": "已送出反馈，等待下一次 MCP/LLM 响应。桌面模式下窗口会保持开启，请手动关闭。",
         "waitingForUser": "等待用户反馈...",
         "alreadySubmitted": "反馈已提交，请等待下次 MCP 调用",
         "processingFeedback": "正在处理中，请稍候",

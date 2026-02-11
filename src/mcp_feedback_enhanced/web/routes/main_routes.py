@@ -65,7 +65,7 @@ def setup_routes(manager: "WebUIManager"):
                 "index.html",
                 {
                     "request": request,
-                    "title": "MCP Feedback Enhanced",
+                    "title": "MCP Feedback Enhanced Pro",
                     "has_session": False,
                     "version": __version__,
                 },
@@ -81,7 +81,7 @@ def setup_routes(manager: "WebUIManager"):
                 "request": request,
                 "project_directory": current_session.project_directory,
                 "summary": current_session.summary,
-                "title": "Interactive Feedback - 回饋收集",
+                "title": "MCP Feedback Enhanced Pro - 回饋收集",
                 "version": __version__,
                 "has_session": True,
                 "layout_mode": layout_mode,

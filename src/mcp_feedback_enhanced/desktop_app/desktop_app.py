@@ -152,6 +152,11 @@ class DesktopApp:
                     desktop_dir / "mcp-feedback-enhanced-pro-desktop-macos-arm64",
                     desktop_dir / "mcp-feedback-enhanced-pro-desktop-linux",
                     desktop_dir / "mcp-feedback-enhanced-pro-desktop",
+                    desktop_dir / "mcp-feedback-enhanced-desktop.exe",
+                    desktop_dir / "mcp-feedback-enhanced-desktop-macos-intel",
+                    desktop_dir / "mcp-feedback-enhanced-desktop-macos-arm64",
+                    desktop_dir / "mcp-feedback-enhanced-desktop-linux",
+                    desktop_dir / "mcp-feedback-enhanced-desktop",
                 ]
 
                 for fallback in fallback_files:

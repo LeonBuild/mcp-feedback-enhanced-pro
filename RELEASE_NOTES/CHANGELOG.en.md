@@ -2,6 +2,21 @@
 
 This document records all version updates for **MCP Feedback Enhanced**.
 
+## [v3.0.2] - 2026-02-11 - Desktop Pro Title and Keep-Open Behavior
+
+### 🌟 Version Highlights
+This patch improves desktop UX by keeping the desktop window open after feedback submission and clarifies current state messaging while standardizing desktop app title branding to Pro.
+
+### ✨ Improvements
+- Updated desktop product/window title to `MCP Feedback Enhanced Pro`
+- Kept desktop window open after feedback submission (no automatic close)
+- Improved submitted-state message to explain waiting status and manual close behavior
+
+### 🐛 Bug Fixes
+- Added executable fallback compatibility for legacy desktop binary names (`mcp-feedback-enhanced-desktop*`)
+
+---
+
 ## [v3.0.1] - 2026-02-11 - Pro Branding and uvx Prerelease Guidance
 
 ### 🌟 Version Highlights

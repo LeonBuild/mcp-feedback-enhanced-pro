@@ -360,7 +360,7 @@
         "messageCount": "訊息",
         "sessionCount": "會話",
         "statusText": "狀態",
-        "toolCallsUsed": "Tools",
+        "toolCallsUsed": "Tools Call",
         "toolCallsTooltip": "目前 chat 已用 tools call 統計",
         "waiting": "等待中",
         "times": "次",

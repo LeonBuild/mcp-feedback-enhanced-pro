@@ -29,10 +29,17 @@ pub fn create_tauri_builder() -> Builder<tauri::Wry> {
                 *state = Some(app.handle().clone());
             }
 
-            // 設置應用程式狀態
-            let _app_state = app.state::<AppState>();
-            {
-                // 這裡可以設置初始狀態
+            // 獲取主視窗，先統一設定標題，再根據環境變數決定是否導航
+            if let Some(window) = app.get_webview_window("main") {
+                let app_version = std::env::var("MCP_APP_VERSION")
+                    .unwrap_or_else(|_| env!("CARGO_PKG_VERSION").to_string());
+                let window_title = format!("MCP Feedback Enhanced Pro v{}", app_version);
+                let _ = window.set_title(&window_title);
+
+                if let Ok(web_url) = std::env::var("MCP_WEB_URL") {
+                    println!("檢測到 Web URL: {}", web_url);
+                    let _ = window.navigate(web_url.parse().unwrap());
+                }
             }
 
             println!("Tauri 應用程式已初始化");

@@ -16,6 +16,7 @@ import time
 
 # 導入現有的 MCP Feedback Enhanced 模組
 try:
+    from mcp_feedback_enhanced import __version__
     from mcp_feedback_enhanced.debug import server_debug_log as debug_log
     from mcp_feedback_enhanced.web.main import WebUIManager, get_web_ui_manager
 except ImportError as e:
@@ -214,6 +215,7 @@ class DesktopApp:
         env = os.environ.copy()
         env["MCP_DESKTOP_MODE"] = "true"
         env["MCP_WEB_URL"] = server_url
+        env["MCP_APP_VERSION"] = __version__
 
         # 啟動 Tauri 應用程式
         try:

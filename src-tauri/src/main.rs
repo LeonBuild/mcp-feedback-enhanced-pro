@@ -55,12 +55,16 @@ fn main() {
                 *state = Some(app.handle().clone());
             }
 
-            // 檢查是否有 MCP_WEB_URL 環境變數
-            if let Ok(web_url) = std::env::var("MCP_WEB_URL") {
-                println!("檢測到 Web URL: {}", web_url);
+            // 獲取主視窗，先統一設定標題，再根據環境變數決定是否導航
+            if let Some(window) = app.get_webview_window("main") {
+                let app_version = std::env::var("MCP_APP_VERSION")
+                    .unwrap_or_else(|_| env!("CARGO_PKG_VERSION").to_string());
+                let window_title = format!("MCP Feedback Enhanced Pro v{}", app_version);
+                let _ = window.set_title(&window_title);
 
-                // 獲取主視窗並導航到 Web URL
-                if let Some(window) = app.get_webview_window("main") {
+                // 檢查是否有 MCP_WEB_URL 環境變數
+                if let Ok(web_url) = std::env::var("MCP_WEB_URL") {
+                    println!("檢測到 Web URL: {}", web_url);
                     let _ = window.navigate(web_url.parse().unwrap());
                 }
             }

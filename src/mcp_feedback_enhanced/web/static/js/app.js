@@ -14,6 +14,24 @@
     // 確保命名空間存在
     window.MCPFeedback = window.MCPFeedback || {};
     const Utils = window.MCPFeedback.Utils;
+    const APP_DISPLAY_NAME = 'MCP Feedback Enhanced Pro';
+
+    function buildWindowTitle(projectDirectory) {
+        const rawVersion = window.MCPFeedback && window.MCPFeedback.appVersion;
+        const versionText = rawVersion ? ' v' + String(rawVersion).trim() : '';
+        const baseTitle = APP_DISPLAY_NAME + versionText;
+
+        if (!projectDirectory) {
+            return baseTitle;
+        }
+
+        const projectName = projectDirectory.split(/[/\\]/).pop();
+        if (!projectName) {
+            return baseTitle;
+        }
+
+        return baseTitle + ' - ' + projectName;
+    }
 
     /**
      * 主應用程式建構函數
@@ -992,8 +1010,7 @@
 
             // 更新頁面標題
             if (data.session_info.project_directory) {
-                const projectName = data.session_info.project_directory.split(/[/\\]/).pop();
-                document.title = 'MCP Feedback - ' + projectName;
+                document.title = buildWindowTitle(data.session_info.project_directory);
             }
 
             // 使用局部更新替代整頁刷新
@@ -1040,8 +1057,7 @@
 
         // 更新頁面標題顯示會話信息
         if (statusInfo.project_directory) {
-            const projectName = statusInfo.project_directory.split(/[/\\]/).pop();
-            document.title = 'MCP Feedback - ' + projectName;
+            document.title = buildWindowTitle(statusInfo.project_directory);
         }
 
         // 使用之前已聲明的 sessionId
@@ -1723,8 +1739,7 @@
 
                 // 更新頁面標題
                 if (sessionData.project_directory) {
-                    const projectName = sessionData.project_directory.split(/[/\\]/).pop();
-                    document.title = 'MCP Feedback - ' + projectName;
+                    document.title = buildWindowTitle(sessionData.project_directory);
                 }
 
                 console.log('✅ 局部更新完成');
